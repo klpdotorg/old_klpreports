@@ -3,7 +3,7 @@ import psycopg2
 import traceback
 import sys, os,traceback
 import db.KLPDB
-import utils.QueryConstants
+import db.Queries
 
 connection = db.KLPDB.getConnection()
 cursor = connection.cursor()
@@ -23,7 +23,7 @@ class CommonUtil:
       #  constype_str = "mla"
       #elif constype == 3:
       #  constype_str = "corporator"
-      cursor.execute(utils.QueryConstants.getDictionary(constype)[constype_str + '_const_details'],constid)
+      cursor.execute(db.Queries.getDictionary(constype)[constype_str + '_const_details'],constid)
       result = cursor.fetchall()
       for row in result:
         data['const_name'] = row[1].strip() if row[1] != None else ''
@@ -53,7 +53,7 @@ class CommonUtil:
       data = {}
       tabledata = {}
       for querykey in qkeys:
-        cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey], constid)
+        cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey], constid)
         result = cursor.fetchall()
         for row in result:
           tabledata[querykey] = str(row[0])

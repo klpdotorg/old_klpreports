@@ -17,7 +17,6 @@ abspath = os.path.dirname(__file__)
 sys.path.append(abspath)
 os.chdir(abspath)
 import db.KLPDB
-import utils.QueryConstants
 import utils.DemographicsUtil
 import utils.FinancesUtil
 import utils.InfraUtil

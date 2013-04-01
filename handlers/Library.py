@@ -4,7 +4,7 @@ import traceback
 import sys, os,traceback
 from operator import itemgetter
 import db.KLPDB
-import utils.QueryConstants
+import db.Queries
 from utils.CommonUtil import CommonUtil
 
 connection = db.KLPDB.getConnection()
@@ -38,14 +38,14 @@ class Library:
     data = {}
     tabledata = {}
     querykey = 'lib_count' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       lib_count = row[0]
     data[querykey] = lib_count
     connection.commit()
     querykey = 'lib_status' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     akshara_run = ['Working','Closed']
     akshara_exp = ['Working']
@@ -71,7 +71,7 @@ class Library:
     connection.commit()
     tabledata = {}
     querykey = 'lib_summary' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       tabledata['total_books'] = row[0]
@@ -87,7 +87,7 @@ class Library:
   def getLibMisc(self,constype,constid):
     data = {}
     querykey = 'gend_sch' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     chartdata ={}
     for row in result:
@@ -97,7 +97,7 @@ class Library:
     connection.commit()
 
     querykey = 'moi_sch' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     tabledata = {}
     for row in result:
@@ -113,7 +113,7 @@ class Library:
     data = {}
     tabledata = {}
     querykey = 'lib_lang' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       if row[0] in tabledata.keys():
@@ -124,7 +124,7 @@ class Library:
     data[querykey] = tabledata
     tabledata = {}
     querykey = 'lib_level' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       if row[0] in tabledata.keys():
@@ -139,7 +139,7 @@ class Library:
     data = {}
     tabledata = {}
     querykey = 'lib_class_lang' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       if row[0]:
@@ -151,7 +151,7 @@ class Library:
     data[querykey] = tabledata
     tabledata = {}
     querykey = 'lib_class_level' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       if row[0]:
@@ -180,7 +180,7 @@ class Library:
         crit='neighbours_'
         query_keys = ['libtxn','libinfra','libstu', 'libschcount']
         for key in query_keys:
-          cursor.execute(utils.QueryConstants.getDictionary(constype)[constype_str+'_'+crit+key], [tuple(neighbours)])
+          cursor.execute(db.Queries.getDictionary(constype)[constype_str+'_'+crit+key], [tuple(neighbours)])
           result = cursor.fetchall()
           for row in result:
             if row[0].strip() in tabledata.keys():

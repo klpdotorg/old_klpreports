@@ -4,7 +4,7 @@ import traceback
 import sys, os,traceback
 from operator import itemgetter
 import db.KLPDB
-import utils.QueryConstants
+import db.Queries
 from utils.CommonUtil import CommonUtil
 
 connection = db.KLPDB.getConnection()
@@ -39,7 +39,7 @@ class Demographics:
   def genderGraphs(self,constype,constid,qkeys):
     data = {}
     for querykey in qkeys:
-      cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
       result = cursor.fetchall()
       chartdata ={}
       for row in result:
@@ -57,7 +57,7 @@ class Demographics:
   def mtGraphs(self,constype,constid,qkeys):
     data = {}
     for querykey in qkeys:
-      cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
       result = cursor.fetchall()
       tabledata = {}
       invertdata = {}
@@ -88,7 +88,7 @@ class Demographics:
   def pieGraphs(self,constype,constid,qkeys):
     data = {}
     for querykey in qkeys:
-      cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
       result = cursor.fetchall()
       tabledata = {}
       for row in result:
@@ -119,25 +119,25 @@ class Demographics:
         neighbours_sch = {}
         neighbours_presch = {}
         
-        cursor.execute(utils.QueryConstants.getDictionary(constype)[constype_str + '_neighbour_sch'], [tuple(neighbours)])
+        cursor.execute(db.Queries.getDictionary(constype)[constype_str + '_neighbour_sch'], [tuple(neighbours)])
         result = cursor.fetchall()
         for row in result:
           neighbours_sch[row[0].strip()]={'schcount':str(row[1])}
         connection.commit()
 
-        cursor.execute(utils.QueryConstants.getDictionary(constype)[constype_str + '_neighbour_presch'], [tuple(neighbours)])
+        cursor.execute(db.Queries.getDictionary(constype)[constype_str + '_neighbour_presch'], [tuple(neighbours)])
         result = cursor.fetchall()
         for row in result:
           neighbours_presch[row[0].strip()] = {'preschcount':str(row[1])}
         connection.commit()
          
-        cursor.execute(utils.QueryConstants.getDictionary(constype)[constype_str + '_neighbour_gendsch'],[tuple(neighbours)])
+        cursor.execute(db.Queries.getDictionary(constype)[constype_str + '_neighbour_gendsch'],[tuple(neighbours)])
         result = cursor.fetchall()
         for row in result:
           neighbours_sch[row[0].strip()][row[1].strip()] = str(row[2])
         connection.commit()
         
-        cursor.execute(utils.QueryConstants.getDictionary(constype)[constype_str + '_neighbour_gendpresch'],[tuple(neighbours)])
+        cursor.execute(db.Queries.getDictionary(constype)[constype_str + '_neighbour_gendpresch'],[tuple(neighbours)])
         result = cursor.fetchall()
         for row in result:
           neighbours_presch[row[0].strip()][row[1].strip()] = str(row[2])

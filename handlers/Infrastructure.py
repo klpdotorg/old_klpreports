@@ -4,7 +4,7 @@ import traceback
 import sys, os,traceback
 from operator import itemgetter
 import db.KLPDB
-import utils.QueryConstants
+import db.Queries
 from utils.CommonUtil import CommonUtil
 
 connection = db.KLPDB.getConnection()
@@ -38,7 +38,7 @@ class Infrastructure:
     data = {}
     querykeys = ['get_dise_count_blore','get_sch_count_blore','get_ai_count_blore','get_ang_count_blore']
     for key in querykeys:
-      cursor.execute(utils.QueryConstants.getDictionary("common_queries")[key])
+      cursor.execute(db.Queries.getDictionary("common_queries")[key])
       result = cursor.fetchall()
       for row in result:
         data[key.replace("get_","")] = row[0]
@@ -46,7 +46,7 @@ class Infrastructure:
     querykeys = ['get_dise_avg_blore','get_ai_avg_blore']
     for key in querykeys:
       tabledata = {}
-      cursor.execute(utils.QueryConstants.getDictionary("common_queries")[key])
+      cursor.execute(db.Queries.getDictionary("common_queries")[key])
       result = cursor.fetchall()
       for row in result:
         if 'dise' in key:
@@ -64,7 +64,7 @@ class Infrastructure:
     blore_infra = data['ai_avg_blore']
 
     querykey = 'infra_count'
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
      infra_count = row[0]
@@ -72,7 +72,7 @@ class Infrastructure:
     connection.commit()
 
     querykey = 'ang_infra' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       if row[0] in ['waste_basket','toilet','toilet_roof','akshara_kits']:
@@ -93,7 +93,7 @@ class Infrastructure:
     blore_dise = data['dise_avg_blore']
 
     querykey = 'dise_count'
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
      dise_count = row[0]
@@ -101,7 +101,7 @@ class Infrastructure:
     connection.commit()
 
     querykey = 'dise_facility' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       if row[0] in ['toilet_all','ramp','medical']:
@@ -121,7 +121,7 @@ class Infrastructure:
     constype_str = constype
     try:
       querykey = 'neighbours_df_count'
-      cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],[tuple(neighbours)])
+      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],[tuple(neighbours)])
       result = cursor.fetchall()
       dise_count = {} 
       for row in result:
@@ -130,7 +130,7 @@ class Infrastructure:
       connection.commit()
 
       querykey = 'neighbours_ai_count'
-      cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],[tuple(neighbours)])
+      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],[tuple(neighbours)])
       result = cursor.fetchall()
       infra_count = {} 
       for row in result:
@@ -148,7 +148,7 @@ class Infrastructure:
             counts_dict = dise_count
           else:
             counts_dict = infra_count
-          cursor.execute(utils.QueryConstants.getDictionary(constype)[constype_str+'_'+crit+key], [tuple(neighbours)])
+          cursor.execute(db.Queries.getDictionary(constype)[constype_str+'_'+crit+key], [tuple(neighbours)])
           result = cursor.fetchall()
           for row in result:
             if row[1] in ['waste_basket','toilet','toilet_roof','akshara_kits','toilet_all','ramp','medical']:

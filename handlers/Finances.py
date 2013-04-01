@@ -4,7 +4,7 @@ import traceback
 import sys, os,traceback
 from operator import itemgetter
 import db.KLPDB
-import utils.QueryConstants
+import db.Queries
 from utils.CommonUtil import CommonUtil
 
 connection = db.KLPDB.getConnection()
@@ -35,7 +35,7 @@ class Finances:
     data = {}
     tabledata = {}
     querykey = 'tlmgrant_sch' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       tabledata['grant_amount'] = str(row[3])
@@ -49,7 +49,7 @@ class Finances:
     data = {}
     tabledata = {}
     querykey = 'annualgrant_sch' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     total_grant = 0
     for row in result:
@@ -64,7 +64,7 @@ class Finances:
     data = {}
     tabledata = {}
     querykey = 'mtncgrant_sch' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     total_grant = 0
     for row in result:
@@ -84,7 +84,7 @@ class Finances:
         crit='neighbor_'
         query_keys = ['tlm','annual','mntnc'] 
         for key in query_keys:
-          cursor.execute(utils.QueryConstants.getDictionary(constype)[constype_str+'_'+crit+key], [tuple(neighbours)])
+          cursor.execute(db.Queries.getDictionary(constype)[constype_str+'_'+crit+key], [tuple(neighbours)])
           result = cursor.fetchall()
           for row in result:
             if row[0].strip() in tabledata.keys():

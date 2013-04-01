@@ -4,7 +4,7 @@ import traceback
 import sys, os,traceback
 from operator import itemgetter
 import db.KLPDB
-import utils.QueryConstants
+import db.Queries
 from utils.CommonUtil import CommonUtil
 
 connection = db.KLPDB.getConnection()
@@ -35,13 +35,13 @@ class Nutrition:
     data = {}
     querykeys = ['dise_enrol','klp_enrol'] 
     for querykey in querykeys:
-      cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
       result = cursor.fetchall()
       for row in result:
         data[querykey] = {'numboys':row[0],'numgirls':row[1]} 
       connection.commit()
     querykey = 'sch_count'
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     for row in result:
       data[querykey] = {'totsch':row[0],'mdmsch':row[1]} 
@@ -51,7 +51,7 @@ class Nutrition:
   def getMidDayMealData(self,constype,constid):
     data = {}
     querykey = 'mdm_agg' 
-    cursor.execute(utils.QueryConstants.getDictionary(constype)[constype + '_' + querykey],constid)
+    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()
     tabledata ={}
     for row in result:
