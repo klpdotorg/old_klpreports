@@ -22,6 +22,7 @@ import utils.FinancesUtil
 import utils.InfraUtil
 import utils.LibraryUtil
 import utils.NutritionUtil
+import utils.LearningUtil
 from utils.CommonUtil import CommonUtil
 
 from handlers.Demographics import Demographics
@@ -29,6 +30,7 @@ from handlers.Infrastructure import Infrastructure
 from handlers.Finances import Finances
 from handlers.Library import Library
 from handlers.Nutrition import Nutrition 
+from handlers.Learning import Learning
 
 render = web.template.render('templates/')
 
@@ -48,12 +50,12 @@ class Charts:
       lang = 1
     data = {}
     util = CommonUtil()
+    data.update({'transdict':util.getTranslations(lang)})
     if rep_type == '1':
       demographics = Demographics()
       queries = ['schcount','preschcount']
       data.update(util.countsTable(constype,[constid],queries))
       data.update(demographics.generateData(constype,[constid]))
-      data.update({'transdict':util.getTranslations(lang)})
       data.update(utils.DemographicsUtil.getDemographicsText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.demographics(simplejson.dumps(data,sort_keys=True))
@@ -62,7 +64,6 @@ class Charts:
       queries = ['abs_schcount','fin_schcount']
       data.update(util.countsTable(constype,[constid],queries))
       data.update(finances.generateData(constype,[constid]))
-      data.update({'transdict':util.getTranslations(lang)})
       data.update(utils.FinancesUtil.getFinancesText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.finances(simplejson.dumps(data,sort_keys=True))
@@ -71,7 +72,6 @@ class Charts:
       queries = ['abs_schcount','abs_preschcount']
       data.update(util.countsTable(constype,[constid],queries))
       data.update(infra.generateData(constype,[constid]))
-      data.update({'transdict':util.getTranslations(lang)})
       data.update(utils.InfraUtil.getInfraText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.infrastructure(simplejson.dumps(data,sort_keys=True))
@@ -80,17 +80,25 @@ class Charts:
       queries = ['abs_schcount','abs_preschcount']
       data.update(util.countsTable(constype,[constid],queries))
       data.update(library.generateData(constype,[constid]))
-      data.update({'transdict':util.getTranslations(lang)})
       data.update(utils.LibraryUtil.getLibText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.library(simplejson.dumps(data,sort_keys=True))
     elif rep_type == '5':
       nutrition = Nutrition()
       data.update(nutrition.generateData(constype,[constid]))
-      data.update({'transdict':util.getTranslations(lang)})
       data.update(utils.NutritionUtil.getNutriText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.nutrition(simplejson.dumps(data,sort_keys=True))
+    elif rep_type == '6':
+      queries = ['abs_schcount','abs_preschcount']
+      data.update(util.countsTable(constype,[constid],queries))
+      learning = Learning()
+      data.update(learning.generateData(constype,[constid]))
+      data.update(utils.LearningUtil.getLearningText(data,lang))
+      web.header('Content-Type','text/html; charset=utf-8')
+      return render.learning(simplejson.dumps(data,sort_keys=True))
+      #web.header('Content-Type', 'application/json')
+      #return jsonpickle.encode(data)
     else:
       pass
 
