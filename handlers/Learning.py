@@ -82,14 +82,15 @@ class Learning:
       for row in result:
         data[querykey] = row[0] 
       connection.commit()
-    tabledata = {}
-    querykey = 'ang_assess_gender' 
-    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-    result = cursor.fetchall()
-    for row in result:
-      tabledata[row[0]] = row[1]
-    data[querykey] = tabledata
-    connection.commit()
+    queries = ['ang_assess_gender','ang_assess_bang_gender']
+    for querykey in queries:
+      tabledata = {}
+      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
+      result = cursor.fetchall()
+      for row in result:
+        tabledata[row[0]] = row[1]
+      data[querykey] = tabledata
+      connection.commit()
     querykey = 'ang_assess_cnt' 
     cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
     result = cursor.fetchall()

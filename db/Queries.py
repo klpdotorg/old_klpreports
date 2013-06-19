@@ -55,7 +55,20 @@ mla_queries = {
 'mla_neighbours_libinfra':"select tem.const_ward_name, sum(li.numbooks) as books_count from vw_libinfra li, tb_school_electedrep tse, tb_electedrep_master tem where tse.sid=li.sid and tse.mla_const_id=tem.id and tem.elec_comm_code in %s group by tem.const_ward_name;",
 'mla_neighbours_libschcount':"select tem.const_ward_name, count(distinct li.sid) as sch_count from vw_libinfra li, tb_school_electedrep tse, tb_electedrep_master tem where tse.sid=li.sid and tse.mla_const_id=tem.id and tem.elec_comm_code in %s group by tem.const_ward_name;",
 'mla_neighbours_libtxn':"select tem.const_ward_name, sum(llang.child_count) as lang_txn_count from vw_lib_lang_agg llang, tb_school_electedrep tse, tb_electedrep_master tem where  tse.sid=llang.sid and tse.mla_const_id=tem.id and tem.elec_comm_code in %s group by tem.const_ward_name;",
-'mla_neighbours_libstu':"select tem.const_ward_name, sum(tssc.numstu) from tb_school_stu_counts tssc, tb_school_electedrep tse, tb_electedrep_master tem where tse.sid=tssc.sid and tse.mla_const_id=tem.id and tse.heirarchy=1 and tem.elec_comm_code in %s group by tem.const_ward_name;"
+'mla_neighbours_libstu':"select tem.const_ward_name, sum(tssc.numstu) from tb_school_stu_counts tssc, tb_school_electedrep tse, tb_electedrep_master tem where tse.sid=tssc.sid and tse.mla_const_id=tem.id and tse.heirarchy=1 and tem.elec_comm_code in %s group by tem.const_ward_name;",
+'mla_sch_assess_class':"select  vra.class, vra.grade, sum(vra.stucount) as count from vw_reading_2011_agg vra, tb_school_electedrep tse where tse.sid=vra.sid and tse.mla_const_id=%s and vra.acyear='2011-2012' and vra.grade not in ('null','',' ') and vra.class is not null group by vra.class, vra.grade;",
+'mla_sch_assess_bang':"select vra.grade, sum(vra.stucount) as count from vw_reading_2011_agg vra where vra.acyear='2011-2012' and vra.grade not in ('null','',' ') and vra.class is not null group by vra.grade;",
+'mla_sch_assess_const':"select vra.grade, sum(vra.stucount) as count from vw_reading_2011_agg vra, tb_school_electedrep tse where tse.sid=vra.sid and tse.mla_const_id=%s and vra.acyear='2011-2012' and vra.grade not in ('null','',' ') and vra.class is not null group by vra.grade;",
+'mla_sch_assess_gender':"select  vra.gender, vra.grade, sum(vra.stucount) as count from vw_reading_2011_agg vra, tb_school_electedrep tse where tse.sid=vra.sid and tse.mla_const_id=%s and vra.acyear='2011-2012' and vra.grade not in ('null','',' ') and vra.gender != 'err' group by vra.gender, vra.grade;",
+'mla_sch_assess_cnt':"select  count(distinct vra.sid) as schcount, sum(vra.stucount) as stucount from vw_reading_2011_agg vra, tb_school_electedrep tse where tse.sid=vra.sid and tse.mla_const_id=%s and vra.acyear='2011-2012';",
+'mla_sch_assess_bang_cnt':"select count(distinct vra.sid) from vw_reading_2011_agg vra where vra.acyear='2011-2012';",
+'mla_ang_assess_score':"select avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg vap, tb_school_electedrep tse where tse.sid=vap.sid and tse.mla_const_id=%s;",
+'mla_ang_assess_bang':"select avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg vap;",
+'mla_ang_assess_gender':"select vap.gender, avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg vap, tb_school_electedrep tse where tse.sid=vap.sid and tse.mla_const_id=%s group by vap.gender;",
+'mla_ang_assess_bang_gender':"select vap.gender, avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg vap group by vap.gender;",
+'mla_ang_assess_cnt':"select count(distinct vap.sid),sum(vap.stucount) from vw_angpre_2011_agg vap, tb_school_electedrep tse where tse.sid=vap.sid and tse.mla_const_id=%s;",
+'mla_ang_assess_bang_cnt':"select count(distinct vap.sid) from vw_angpre_2011_agg vap;",
+'mla_ang_assess_neighbor':'select tem.const_ward_name, vap.gender, avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg  vap, tb_school_electedrep tse, tb_electedrep_master tem where tse.sid=vap.sid and tse.mla_const_id=tem.id and tse.heirarchy=2 and tem.elec_comm_code in %s group by tem.const_ward_name,vap.gender;'
 }
 
 mp_queries = {
@@ -113,6 +126,7 @@ mp_queries = {
 'mp_ang_assess_score':"select avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg vap, tb_school_electedrep tse where tse.sid=vap.sid and tse.mp_const_id=%s;",
 'mp_ang_assess_bang':"select avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg vap;",
 'mp_ang_assess_gender':"select vap.gender, avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg vap, tb_school_electedrep tse where tse.sid=vap.sid and tse.mp_const_id=%s group by vap.gender;",
+'mp_ang_assess_bang_gender':"select vap.gender, avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg vap group by vap.gender;",
 'mp_ang_assess_cnt':"select count(distinct vap.sid),sum(vap.stucount) from vw_angpre_2011_agg vap, tb_school_electedrep tse where tse.sid=vap.sid and tse.mp_const_id=%s;",
 'mp_ang_assess_bang_cnt':"select count(distinct vap.sid) from vw_angpre_2011_agg vap;",
 'mp_ang_assess_neighbor':'select tem.const_ward_name, vap.gender, avg(vap.median_score * 100/ 56)::int from vw_angpre_2011_agg vap, tb_school_electedrep tse, tb_electedrep_master tem where tse.sid=vap.sid and tse.mp_const_id=tem.id and tse.heirarchy=2 and tem.elec_comm_code in %s group by tem.const_ward_name,vap.gender;'
