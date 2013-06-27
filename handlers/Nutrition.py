@@ -59,6 +59,7 @@ class Nutrition:
         tabledata[row[0]][row[1]]=[row[2],row[3]]
       else:
         tabledata[row[0]]={row[1]:[row[2],row[3]]}
+        data['const_name']=row[4]
     data[querykey] = tabledata
     connection.commit()
     return data

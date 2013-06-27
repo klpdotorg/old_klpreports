@@ -44,14 +44,23 @@ class Charts:
   
   """Returns the main template"""
   def GET(self,searchby,constid,rep_lang,rep_type):
-    constype = int(searchby)
+    if searchby.lower() == 'mp':
+        constype = 1
+    elif searchby.lower() == 'mla':
+        constype = 2
+    elif searchby.lower() == 'corporator':
+        constype = 3
+    elif searchby.lower() == 'cluster':
+        constype = 4
+    elif searchby.lower() == 'block':
+        constype = 5
     lang = 2
-    if rep_lang=='1':
+    if rep_lang.lower()=='kannada':
       lang = 1
     data = {}
     util = CommonUtil()
     data.update({'transdict':util.getTranslations(lang)})
-    if rep_type == '1':
+    if rep_type.lower() == 'demographics':
       demographics = Demographics()
       queries = ['schcount','preschcount']
       data.update(util.countsTable(constype,[constid],queries))
@@ -59,7 +68,7 @@ class Charts:
       data.update(utils.DemographicsUtil.getDemographicsText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.demographics(simplejson.dumps(data,sort_keys=True))
-    elif rep_type == '2':
+    elif rep_type.lower() == 'finance':
       finances = Finances()
       queries = ['abs_schcount','fin_schcount']
       data.update(util.countsTable(constype,[constid],queries))
@@ -67,7 +76,7 @@ class Charts:
       data.update(utils.FinancesUtil.getFinancesText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.finances(simplejson.dumps(data,sort_keys=True))
-    elif rep_type == '3':
+    elif rep_type.lower() == 'infrastructure':
       infra = Infrastructure()
       queries = ['abs_schcount','abs_preschcount']
       data.update(util.countsTable(constype,[constid],queries))
@@ -75,7 +84,7 @@ class Charts:
       data.update(utils.InfraUtil.getInfraText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.infrastructure(simplejson.dumps(data,sort_keys=True))
-    elif rep_type == '4':
+    elif rep_type.lower() == 'library':
       library = Library()
       queries = ['abs_schcount','abs_preschcount']
       data.update(util.countsTable(constype,[constid],queries))
@@ -83,13 +92,13 @@ class Charts:
       data.update(utils.LibraryUtil.getLibText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.library(simplejson.dumps(data,sort_keys=True))
-    elif rep_type == '5':
+    elif rep_type.lower() == 'nutrition':
       nutrition = Nutrition()
       data.update(nutrition.generateData(constype,[constid]))
       data.update(utils.NutritionUtil.getNutriText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.nutrition(simplejson.dumps(data,sort_keys=True))
-    elif rep_type == '6':
+    elif rep_type == 'learning':
       queries = ['abs_schcount','abs_preschcount']
       data.update(util.countsTable(constype,[constid],queries))
       learning = Learning()

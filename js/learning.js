@@ -5,6 +5,7 @@ var translations;
 google.load('visualization', '1', {'packages':['corechart','table','imagechart']});
 var table1;
 var grades = ['O','L','W','S','P'];
+var grade_labels = {'O':'Zero','L':'Letter','W':'Word','S':'Sentence','P':'Paragraph'};
 
 String.prototype.toTitleCase = function () {
     return this.replace(/\w\S*/g, function(txt){
@@ -85,7 +86,7 @@ function sch_assess_chart()
       var data = new google.visualization.DataTable();
       data.addColumn('string' , 'Class');
       for (var i in grades) {
-          data.addColumn('number', grades[i].toTitleCase());
+          data.addColumn('number', grade_labels[grades[i]]);
       }
       for (var key in info["sch_assess_class"]){
         row = ['Class ' + key]
@@ -102,7 +103,7 @@ function sch_assess_chart()
       data = new google.visualization.DataTable();
       data.addColumn('string' , 'Gender');
       for (var i in grades) {
-          data.addColumn('number', grades[i].toTitleCase());
+          data.addColumn('number', grade_labels[grades[i]]);
       }
       for (var key in info["sch_assess_gender"]){
         row = [key.toUpperCase()+'S']
@@ -119,7 +120,7 @@ function sch_assess_chart()
       data = new google.visualization.DataTable();
       data.addColumn('string' , 'Constituency');
       for (var i in grades) {
-          data.addColumn('number', grades[i].toTitleCase());
+          data.addColumn('number', grade_labels[grades[i]]);
       }
       row = ['Bangalore']
       for (var i in grades) {
@@ -142,48 +143,60 @@ function sch_assess_chart()
 
 function ang_assess_chart()
 {
-     var svghtml= '<svg width="100%" height="200px" width="400px" version="1.0" xmlns="http://www.w3.org/2000/svg">'
+     var svghtml= '<svg width="100%" height="210px" width="400px" version="1.0" xmlns="http://www.w3.org/2000/svg">'
      var _cx = 180;
      var _cy = 100;
      var bang_r = info["ang_assess_bang"]
-     svghtml = svghtml + drawCircle(_cx,_cy,bang_r,'Bangalore','#31A354');
+     svghtml = svghtml + drawCircle(_cx,_cy,bang_r,'Bangalore','#848484');
      svghtml = svghtml + '</svg>';
      document.getElementById('angassessbang_gph').innerHTML = svghtml
 
-     svghtml= '<svg width="100%" height="200px" width="400px" version="1.0" xmlns="http://www.w3.org/2000/svg">'
+     svghtml= '<svg width="100%" height="210px" width="400px" version="1.0" xmlns="http://www.w3.org/2000/svg">'
      _cx = 180;
      _cy = 100;
      var const_r = info["ang_assess_score"];
-     svghtml = svghtml + drawCircle(_cx,_cy,const_r,info["const_name"].toTitleCase(),'#E6550D');
+     if (const_r > bang_r) {
+       svghtml = svghtml + drawCircle(_cx,_cy,const_r,info["const_name"].toTitleCase(),'#31A354');
+     } else {
+       svghtml = svghtml + drawCircle(_cx,_cy,const_r,info["const_name"].toTitleCase(),'#E6550D');
+     }
      svghtml = svghtml + '</svg>';
      document.getElementById('angassess_gph').innerHTML = svghtml
 
      var boy_r = info["ang_assess_gender"]["male"];
      var girl_r = info["ang_assess_gender"]["female"];
-     document.getElementById('angassess_boy').innerHTML = drawIcons(boy_r,girl_r,'B');
-     document.getElementById('angassess_girl').innerHTML = drawIcons(boy_r,girl_r,'G');
+     document.getElementById('angassess_boy').innerHTML = drawIcons(boy_r,girl_r,'B',1);
+     document.getElementById('angassess_girl').innerHTML = drawIcons(boy_r,girl_r,'G',1);
 
      var boy_r = info["ang_assess_bang_gender"]["male"];
      var girl_r = info["ang_assess_bang_gender"]["female"];
-     document.getElementById('angassess_bang_boy').innerHTML = drawIcons(boy_r,girl_r,'B');
-     document.getElementById('angassess_bang_girl').innerHTML = drawIcons(boy_r,girl_r,'G');
+     document.getElementById('angassess_bang_boy').innerHTML = drawIcons(boy_r,girl_r,'B',2);
+     document.getElementById('angassess_bang_girl').innerHTML = drawIcons(boy_r,girl_r,'G',2);
 }
 
-function drawIcons(boy_r,girl_r,gender)
+function drawIcons(boy_r,girl_r,gender,gphpos)
 {
      var imghtml = '<div style="width:200px;text-align:center">';
      if ( gender == 'B')
      {
-       if( parseInt(boy_r) > parseInt(girl_r)) {
-          imghtml = imghtml + '<img src="/images/boy_green.png"><br/>' + boy_r + '%<br/>Boys\' Score';
+       if (gphpos ==  1) {
+         if( parseInt(boy_r) > parseInt(girl_r)) {
+            imghtml = imghtml + '<img src="/images/boy_green.png"><br/>' + boy_r + '%<br/>Boys\' Score';
+         } else {
+            imghtml = imghtml + '<img src="/images/boy_orange.png"><br/>' + boy_r + '%<br/>Boys\' Score';
+         }
        } else {
-          imghtml = imghtml + '<img src="/images/boy_orange.png"><br/>' + boy_r + '%<br/>Boys\' Score';
+            imghtml = imghtml + '<img src="/images/boy_grey.png"><br/>' + boy_r + '%<br/>Boys\' Score';
        }
      } else {
-       if( parseInt(boy_r) > parseInt(girl_r)) {
-          imghtml = imghtml + '<img src="/images/girl_orange.png"><br/>' + girl_r + '%<br/>Girls\' Score';
+       if (gphpos ==  1) {
+         if( parseInt(boy_r) > parseInt(girl_r)) {
+            imghtml = imghtml + '<img src="/images/girl_orange.png"><br/>' + girl_r + '%<br/>Girls\' Score';
+         } else {
+            imghtml = imghtml + '<img src="/images/girl_green.png"><br/>' + girl_r + '%<br/>Girls\' Score';
+         }
        } else {
-          imghtml = imghtml + '<img src="/images/girl_green.png"><br/>' + girl_r + '%<br/>Girls\' Score';
+            imghtml = imghtml + '<img src="/images/girl_grey.png"><br/>' + girl_r + '%<br/>Girls\' Score';
        }
      }
      imghtml = imghtml + '</div>';
@@ -194,7 +207,7 @@ function drawIcons(boy_r,girl_r,gender)
 function drawCircle(_cx,_cy,_r,label,color) {
      var circle_txt = '<circle cx="' + _cx + '" cy="' + _cy + '" r="' + logslider(_r) + '" fill="' + color + '"/>';
      var label_txt = '<text x="' + _cx + '" y="' + _cy + '" font-family="sans-serif" font-size="15px" text-anchor="middle" fill="black">' + _r + '%</text>';
-     var desc_txt = '<text x="' + _cx + '" y="' + (_cy + 80) + '" font-family="sans-serif" font-size="15px" text-anchor="middle" fill="black">' + label + '</text>';
+     var desc_txt = '<text x="' + _cx + '" y="' + (_cy + 100) + '" font-family="sans-serif" font-size="15px" text-anchor="middle" fill="black">' + label + '</text>';
      return circle_txt + label_txt + desc_txt;
 }
 

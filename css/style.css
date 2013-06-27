@@ -441,6 +441,29 @@ padding: 0 0 0.5em 0;
 font-size: 8pt;
 }
 
+dl.data-def{ 
+padding-left:20px;
+} 
+
+.data-def dt { 
+float: left; 
+clear: left; 
+width: 150px; 
+text-align: left; 
+color:  black; 
+font-size: 9pt;
+font-weight: bold; 
+} 
+
+.data-def dd:before {
+content: ":"; 
+} 
+
+.data-def dd{ 
+margin: 0 0 0 20px; 
+padding: 0 0 0.5em 0; 
+font-size: 9pt;
+
 dl.header-def {
 }
 
