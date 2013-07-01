@@ -109,7 +109,8 @@ function sch_assess_chart()
         row = [key.toUpperCase()+'S']
         for (var i in grades) {
             score = info["sch_assess_gender"][key][grades[i]] == undefined ? 0 : info["sch_assess_gender"][key][grades[i]];
-            row.push(score * 100/ info["sch_assess_gender"][key]["total"]);
+            score = score / info["sch_assess_gender"][key]["total"] * 100;
+            row.push(score);
         }
         data.addRow(row);
       }
