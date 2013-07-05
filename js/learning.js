@@ -64,20 +64,23 @@ function initialise(data)
 
     document.getElementById('schassess_txt').innerHTML = (info['schassess_txt'] == 'undefined') ? translations['H60'] : info['schassess_txt'];
     document.getElementById('schgph_txt').innerHTML = (info['schgph_txt'] == 'undefined') ? translations['H60'] : info['schgph_txt'];
-    sch_assess_chart();
+    if(Object.keys(info["sch_assess_class"]).length > 0)
+    {
+      sch_assess_chart();
+    } else {
+      document.getElementById('schassessclass_gph').innerHTML = '<BR/><b>' + translations['H60'] + '</b>' ;
+    }
 
     document.getElementById("angassesshead").innerHTML = translations['H114'];
     document.getElementById('angassess_txt').innerHTML = (info['angassess_txt'] == 'undefined') ? translations['H60'] : info['angassess_txt'];
     document.getElementById('angassessmore_txt').innerHTML = (info['angassessmore_txt'] == 'undefined') ? translations['H60'] : info['angassessmore_txt'];
     document.getElementById('angexpln_txt').innerHTML = (info['angexpln_txt'] == 'undefined') ? translations['H60'] : info['angexpln_txt'];
-    ang_assess_chart();
-
-/*  if(Object.keys(info["ang_assess_neighbor"]).length > 0) {
-    ang_neighbours_chart();
-  }
-    document.getElementById("angneighhead").innerHTML = translations['H119'];
-    document.getElementById('angneighbours_txt').innerHTML = (info['angneighbours_txt'] == 'undefined') ? translations['H60'] : info['angneighbours_txt']; */
-
+    if(info["ang_assess_score"] !=undefined )
+    {
+      ang_assess_chart();
+    } else {
+      document.getElementById('angassess_gph').innerHTML = '<BR/><b>' + translations['H60'] + '</b>';
+    }
 
     document.getElementById('source_txt').innerHTML = (info['source_txt'] == 'undefined') ? translations['H60'] : info['source_txt'];
   }
