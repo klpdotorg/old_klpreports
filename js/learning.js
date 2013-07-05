@@ -63,10 +63,12 @@ function initialise(data)
     document.getElementById('learningintro_txt').innerHTML = (info['learningintro_txt'] == 'undefined') ? translations['H60'] : info['learningintro_txt'];
 
     document.getElementById('schassess_txt').innerHTML = (info['schassess_txt'] == 'undefined') ? translations['H60'] : info['schassess_txt'];
+    document.getElementById('schgph_txt').innerHTML = (info['schgph_txt'] == 'undefined') ? translations['H60'] : info['schgph_txt'];
     sch_assess_chart();
 
     document.getElementById("angassesshead").innerHTML = translations['H114'];
     document.getElementById('angassess_txt').innerHTML = (info['angassess_txt'] == 'undefined') ? translations['H60'] : info['angassess_txt'];
+    document.getElementById('angassessmore_txt').innerHTML = (info['angassessmore_txt'] == 'undefined') ? translations['H60'] : info['angassessmore_txt'];
     document.getElementById('angexpln_txt').innerHTML = (info['angexpln_txt'] == 'undefined') ? translations['H60'] : info['angexpln_txt'];
     ang_assess_chart();
 
@@ -90,15 +92,19 @@ function sch_assess_chart()
       }
       for (var key in info["sch_assess_class"]){
         row = ['Class ' + key]
+        values = []
         for (var i in grades) {
             score = info["sch_assess_class"][key][grades[i]] == undefined ? 0 : info["sch_assess_class"][key][grades[i]];
-            row.push(score * 100/ info["sch_assess_class"][key]["total"]);
+            score = score / info["sch_assess_class"][key]["total"] * 100;
+            values.push(score);
         }
-        data.addRow(row);
+        //alert(values);
+        //alert(roundPerc(values,100));
+        data.addRow(row.concat(roundPerc(values,100)));
       }
       data.sort([{column:0,desc:false}]);
       var chart1 = new google.visualization.BarChart(document.getElementById('schassessclass_gph'));
-      chart1.draw(data, {width: 750, height: 250, chartArea:{width:'72%'},  title: translations['H115'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'], isStacked:true});
+      chart1.draw(data, {width: 750, height: 250, chartArea:{width:'70%'},  title: translations['H115'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'], isStacked:true});
 
       data = new google.visualization.DataTable();
       data.addColumn('string' , 'Gender');
@@ -107,16 +113,17 @@ function sch_assess_chart()
       }
       for (var key in info["sch_assess_gender"]){
         row = [key.toUpperCase()+'S']
+        values = []
         for (var i in grades) {
             score = info["sch_assess_gender"][key][grades[i]] == undefined ? 0 : info["sch_assess_gender"][key][grades[i]];
             score = score / info["sch_assess_gender"][key]["total"] * 100;
-            row.push(score);
+            values.push(score);
         }
-        data.addRow(row);
+        data.addRow(row.concat(roundPerc(values,100)));
       }
       data.sort([{column:0,desc:false}]);
       var chart1 = new google.visualization.BarChart(document.getElementById('schassessgend_gph'));
-      chart1.draw(data, {width: 750, height: 150, bar:{groupWidth:'35%'},chartArea:{width:'72%'},  title: translations['H116'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'], isStacked:true});
+      chart1.draw(data, {width: 750, height: 150, bar:{groupWidth:'35%'},chartArea:{width:'70%'},  title: translations['H116'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'], isStacked:true});
 
       data = new google.visualization.DataTable();
       data.addColumn('string' , 'Constituency');
@@ -124,21 +131,25 @@ function sch_assess_chart()
           data.addColumn('number', grade_labels[grades[i]]);
       }
       row = ['Bangalore']
+      values = []
       for (var i in grades) {
           score = info["sch_assess_bang"][grades[i]] == undefined ? 0 : info["sch_assess_bang"][grades[i]];
-          row.push(score * 100/ info["sch_assess_bang"]["total"]);
+          score = score * 100/ info["sch_assess_bang"]["total"];
+          values.push(score);
       }
-      data.addRow(row);
+      data.addRow(row.concat(roundPerc(values,100)));
       row = [info['const_name'].toTitleCase()]
+      values = []
       for (var i in grades) {
           score = info["sch_assess_const"][grades[i]] == undefined ? 0 : info["sch_assess_const"][grades[i]];
-          row.push(score * 100/ info["sch_assess_const"]["total"]);
+          score = score * 100/ info["sch_assess_const"]["total"];
+          values.push(score);
       }
-      data.addRow(row);
+      data.addRow(row.concat(roundPerc(values,100)));
 
       data.sort([{column:0,desc:false}]);
       var chart1 = new google.visualization.BarChart(document.getElementById('schassesscomp_gph'));
-      chart1.draw(data, {width: 750, height: 150, bar:{groupWidth:'35%'},chartArea:{width:'72%'},  title: translations['H118'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'],isStacked:true});
+      chart1.draw(data, {width: 750, height: 150, bar:{groupWidth:'35%'},chartArea:{width:'70%'},  title: translations['H118'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'],isStacked:true});
 }
 
 
@@ -164,44 +175,42 @@ function ang_assess_chart()
      svghtml = svghtml + '</svg>';
      document.getElementById('angassess_gph').innerHTML = svghtml
 
-     var boy_r = info["ang_assess_gender"]["male"];
-     var girl_r = info["ang_assess_gender"]["female"];
-     document.getElementById('angassess_boy').innerHTML = drawIcons(boy_r,girl_r,'B',1);
-     document.getElementById('angassess_girl').innerHTML = drawIcons(boy_r,girl_r,'G',1);
-
-     var boy_r = info["ang_assess_bang_gender"]["male"];
-     var girl_r = info["ang_assess_bang_gender"]["female"];
-     document.getElementById('angassess_bang_boy').innerHTML = drawIcons(boy_r,girl_r,'B',2);
-     document.getElementById('angassess_bang_girl').innerHTML = drawIcons(boy_r,girl_r,'G',2);
+     var br = info["ang_assess_gender"]["male"];
+     var gr = info["ang_assess_gender"]["female"];
+     var bbr = info["ang_assess_bang_gender"]["male"];
+     var bgr = info["ang_assess_bang_gender"]["female"];
+     document.getElementById('angassess_boy').innerHTML = drawIcons(br,gr,bbr,bgr,1,'B');
+     document.getElementById('angassess_girl').innerHTML = drawIcons(br,gr,bbr,bgr,1,'G');
+     document.getElementById('angassess_bang_boy').innerHTML = drawIcons(br,gr,bbr,bgr,2,'B');
+     document.getElementById('angassess_bang_girl').innerHTML = drawIcons(br,gr,bbr,bgr,2,'G');
 }
 
-function drawIcons(boy_r,girl_r,gender,gphpos)
+function drawIcons(boy_r,girl_r,blore_boy_r,blore_girl_r,gphpos,gender)
 {
-     var imghtml = '<div style="width:200px;text-align:center">';
-     if ( gender == 'B')
-     {
-       if (gphpos ==  1) {
-         if( parseInt(boy_r) > parseInt(girl_r)) {
-            imghtml = imghtml + '<img src="/images/boy_green.png"><br/>' + boy_r + '%<br/>Boys\' Score';
-         } else {
-            imghtml = imghtml + '<img src="/images/boy_orange.png"><br/>' + boy_r + '%<br/>Boys\' Score';
-         }
+   var imghtml = '<div style="width:200px;text-align:center">';
+   if(gender == 'G') {
+     if (gphpos ==  1) {
+       if( parseInt(girl_r) > parseInt(blore_girl_r)) {
+         imghtml = imghtml + '<img src="/images/girl_green.png"><br/>' + girl_r + '%<br/>Girls\' Score';
        } else {
-            imghtml = imghtml + '<img src="/images/boy_grey.png"><br/>' + boy_r + '%<br/>Boys\' Score';
+         imghtml = imghtml + '<img src="/images/girl_orange.png"><br/>' + girl_r + '%<br/>Girls\' Score';
        }
      } else {
-       if (gphpos ==  1) {
-         if( parseInt(boy_r) > parseInt(girl_r)) {
-            imghtml = imghtml + '<img src="/images/girl_orange.png"><br/>' + girl_r + '%<br/>Girls\' Score';
-         } else {
-            imghtml = imghtml + '<img src="/images/girl_green.png"><br/>' + girl_r + '%<br/>Girls\' Score';
-         }
-       } else {
-            imghtml = imghtml + '<img src="/images/girl_grey.png"><br/>' + girl_r + '%<br/>Girls\' Score';
-       }
+       imghtml = imghtml + '<img src="/images/girl_grey.png"><br/>' + blore_girl_r + '%<br/>Girls\' Score';
      }
-     imghtml = imghtml + '</div>';
-     return imghtml;
+   } else {
+     if (gphpos ==  1) {
+       if( parseInt(boy_r) > parseInt(blore_boy_r)) {
+         imghtml = imghtml + '<img src="/images/boy_green.png"><br/>' + boy_r + '%<br/>Boys\' Score';
+       } else {
+         imghtml = imghtml + '<img src="/images/boy_orange.png"><br/>' + boy_r + '%<br/>Boys\' Score';
+       }
+     } else {
+       imghtml = imghtml + '<img src="/images/boy_grey.png"><br/>' + blore_boy_r + '%<br/>Boys\' Score';
+     }
+   }
+   imghtml = imghtml + '</div>';
+   return imghtml;
 }
 
 
@@ -227,6 +236,14 @@ function sortDict(unsortedObj)
   sortable.push([key, unsortedObj[key]]);
   var sortedDict = sortable.sort(function(a, b) {return b[1] - a[1]});
   return sortedDict;
+}
+
+function roundPerc(l, target) {
+    var off = target - _.reduce(l, function(acc, x) { return acc + Math.round(x) }, 0);
+    return _.chain(l).
+            //sortBy(function(x) { return Math.round(x) - x }).
+            map(function(x, i) { return Math.round(x) + (off > i) - (i >= (l.length + off)) }).
+            value();
 }
 
 function roundNumber(rnum, rlength) { // Arguments: number to round, number of decimal places

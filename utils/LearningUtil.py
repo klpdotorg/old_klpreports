@@ -15,23 +15,27 @@ def getLearningText(data,lang):
         transDict[str(text[0])] = text[2]
 
     learningintro_txt = transDict['1']
-    source_txt = transDict['7']
+    source_txt = transDict['7']+transDict['10']
     angexpln_txt = transDict['13']
+    schgph_txt = transDict['14']
 
     data['learningintro_txt'] = learningintro_txt
     data['source_txt'] = source_txt
     data['angexpln_txt'] = angexpln_txt
+    data['schgph_txt'] = schgph_txt
 
     schassess_txt = transDict['2'] + '<b>' + str(data['sch_assess_bang_cnt']) + '</b>'
     schassess_txt = schassess_txt + transDict['3'] + '<b>' + str(data['sch_assess_cnt']) + '</b>'
     schassess_txt = schassess_txt + transDict['11'] + '<b>' + str(data['sch_assess_stucnt']) + '</b>'
     data['schassess_txt'] = schassess_txt
 
-    angassess_txt = transDict['4']
-    angassess_txt = angassess_txt + transDict['5'] + '<b>' + str(data['ang_assess_bang_cnt']) + '</b>'
+    angassess_intro_txt = transDict['4']
+    angassess_txt = transDict['5'] + '<b>' + str(data['ang_assess_bang_cnt']) + '</b>'
     angassess_txt = angassess_txt + transDict['6'] + '<b>' + str(data['ang_assess_cnt']) + '</b>'
     angassess_txt = angassess_txt + transDict['12'] + '<b>' + str(data['ang_assess_stucnt']) + '</b>'
-    data['angassess_txt'] = angassess_txt
+
+    data['angassess_txt'] = angassess_intro_txt
+    data['angassessmore_txt'] = angassess_txt
          
     return data
 
