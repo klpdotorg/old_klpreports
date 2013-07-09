@@ -174,6 +174,8 @@ function sch_blore_chart()
           values.push(score);
       }
       data.addRow(row.concat(roundPerc(values,100)));
+      row = ['Karnataka Rural']
+      data.addRow(row.concat(roundPerc([5.26,15.16,16.68,19.11,43.79],100)));
 
       var chart1 = new google.visualization.BarChart(document.getElementById('schassesscomp_gph'));
       chart1.draw(data, {width: 750, height: 150, bar:{groupWidth:'35%'},chartArea:{width:'70%'},  title: translations['H121'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'],isStacked:true});
@@ -236,22 +238,22 @@ function drawIcons(boy_r,girl_r,blore_boy_r,blore_girl_r,gphpos,gender)
    if(gender == 'G') {
      if (gphpos ==  1) {
        if( parseInt(girl_r) > parseInt(blore_girl_r)) {
-         imghtml = imghtml + '<img src="/images/girl_green.png"><br/>' + girl_r + '%<br/>Girls\' Score';
+         imghtml = imghtml + '<img src="/images/girl_green.png"><br/><b>' + girl_r + '%</b><br/>Girls\' Score';
        } else {
-         imghtml = imghtml + '<img src="/images/girl_orange.png"><br/>' + girl_r + '%<br/>Girls\' Score';
+         imghtml = imghtml + '<img src="/images/girl_orange.png"><br/><b>' + girl_r + '%</b><br/>Girls\' Score';
        }
      } else {
-       imghtml = imghtml + '<img src="/images/girl_grey.png"><br/>' + blore_girl_r + '%<br/>Girls\' Score';
+       imghtml = imghtml + '<img src="/images/girl_grey.png"><br/><b>' + blore_girl_r + '%</b><br/>Girls\' Score';
      }
    } else {
      if (gphpos ==  1) {
        if( parseInt(boy_r) > parseInt(blore_boy_r)) {
-         imghtml = imghtml + '<img src="/images/boy_green.png"><br/>' + boy_r + '%<br/>Boys\' Score';
+         imghtml = imghtml + '<img src="/images/boy_green.png"><br/><b>' + boy_r + '%</b><br/>Boys\' Score';
        } else {
-         imghtml = imghtml + '<img src="/images/boy_orange.png"><br/>' + boy_r + '%<br/>Boys\' Score';
+         imghtml = imghtml + '<img src="/images/boy_orange.png"><br/><b>' + boy_r + '%</b><br/>Boys\' Score';
        }
      } else {
-       imghtml = imghtml + '<img src="/images/boy_grey.png"><br/>' + blore_boy_r + '%<br/>Boys\' Score';
+       imghtml = imghtml + '<img src="/images/boy_grey.png"><br/><b>' + blore_boy_r + '%</b><br/>Boys\' Score';
      }
    }
    imghtml = imghtml + '</div>';
@@ -261,7 +263,7 @@ function drawIcons(boy_r,girl_r,blore_boy_r,blore_girl_r,gphpos,gender)
 
 function drawCircle(_cx,_cy,_r,label,color) {
      var circle_txt = '<circle cx="' + _cx + '" cy="' + _cy + '" r="' + logslider(_r) + '" fill="' + color + '"/>';
-     var label_txt = '<text x="' + _cx + '" y="' + _cy + '" font-family="sans-serif" font-size="15px" text-anchor="middle" fill="black">' + _r + '%</text>';
+     var label_txt = '<text x="' + _cx + '" y="' + _cy + '" font-family="sans-serif" font-size="15px" font-weight="bold" text-anchor="middle" fill="black">' + _r + '%</text>';
      var desc_txt = '<text x="' + _cx + '" y="' + (_cy + 100) + '" font-family="sans-serif" font-size="15px" text-anchor="middle" fill="black">' + label + '</text>';
      return circle_txt + label_txt + desc_txt;
 }
