@@ -4,8 +4,8 @@ var translations;
 // Load the Visualization API and the piechart package.
 google.load('visualization', '1', {'packages':['corechart','table','imagechart']});
 var table1;
-var grades = ['O','L','W','S','P'];
-var grade_labels = {'O':'Zero','L':'Letter','W':'Word','S':'Sentence','P':'Paragraph'};
+var grades = ['Z','L','W','S','P'];
+var grade_labels = {'Z':'Zero','L':'Letter','W':'Word','S':'Sentence','P':'Paragraph'};
 
 String.prototype.toTitleCase = function () {
     return this.replace(/\w\S*/g, function(txt){
@@ -68,18 +68,20 @@ function initialise(data)
     {
       sch_assess_chart();
     } else {
-      document.getElementById('schassessclass_gph').innerHTML = '<BR/><b>' + translations['H60'] + '</b>' ;
+      document.getElementById('schassessclass_gph').innerHTML = '<br/><br/><b>' + translations['H119'] + '</b><br/>' ;
+      sch_blore_chart();
     }
 
     document.getElementById("angassesshead").innerHTML = translations['H114'];
     document.getElementById('angassess_txt').innerHTML = (info['angassess_txt'] == 'undefined') ? translations['H60'] : info['angassess_txt'];
-    document.getElementById('angassessmore_txt').innerHTML = (info['angassessmore_txt'] == 'undefined') ? translations['H60'] : info['angassessmore_txt'];
     document.getElementById('angexpln_txt').innerHTML = (info['angexpln_txt'] == 'undefined') ? translations['H60'] : info['angexpln_txt'];
     if(info["ang_assess_score"] !=undefined )
     {
+      document.getElementById('angassessmore_txt').innerHTML = (info['angassessmore_txt'] == 'undefined') ? translations['H60'] : info['angassessmore_txt'];
       ang_assess_chart();
     } else {
-      document.getElementById('angassess_gph').innerHTML = '<BR/><b>' + translations['H60'] + '</b>';
+      document.getElementById('angassessmore_txt').innerHTML = (info['angassessmore_txt'] == 'undefined') ? translations['H60'] : info['angassessmore_txt'] + '<br/><br/><b>' + translations['H120'] + '</b><br/>';
+      ang_blore_only();
     }
 
     document.getElementById('source_txt').innerHTML = (info['source_txt'] == 'undefined') ? translations['H60'] : info['source_txt'];
@@ -133,14 +135,6 @@ function sch_assess_chart()
       for (var i in grades) {
           data.addColumn('number', grade_labels[grades[i]]);
       }
-      row = ['Bangalore']
-      values = []
-      for (var i in grades) {
-          score = info["sch_assess_bang"][grades[i]] == undefined ? 0 : info["sch_assess_bang"][grades[i]];
-          score = score * 100/ info["sch_assess_bang"]["total"];
-          values.push(score);
-      }
-      data.addRow(row.concat(roundPerc(values,100)));
       row = [info['const_name'].toTitleCase()]
       values = []
       for (var i in grades) {
@@ -149,12 +143,41 @@ function sch_assess_chart()
           values.push(score);
       }
       data.addRow(row.concat(roundPerc(values,100)));
+      row = ['Bangalore']
+      values = []
+      for (var i in grades) {
+          score = info["sch_assess_bang"][grades[i]] == undefined ? 0 : info["sch_assess_bang"][grades[i]];
+          score = score * 100/ info["sch_assess_bang"]["total"];
+          values.push(score);
+      }
+      data.addRow(row.concat(roundPerc(values,100)));
+      row = ['Karnataka Rural']
+      data.addRow(row.concat(roundPerc([5.26,15.16,16.68,19.11,43.79],100)));
 
-      data.sort([{column:0,desc:false}]);
+      //data.sort([{column:0,desc:false}]);
       var chart1 = new google.visualization.BarChart(document.getElementById('schassesscomp_gph'));
-      chart1.draw(data, {width: 750, height: 150, bar:{groupWidth:'35%'},chartArea:{width:'70%'},  title: translations['H118'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'],isStacked:true});
+      chart1.draw(data, {width: 750, height: 180, bar:{groupWidth:'45%'},chartArea:{width:'70%'},  title: translations['H118'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'],isStacked:true});
 }
 
+function sch_blore_chart()
+{
+      var data = new google.visualization.DataTable();
+      data.addColumn('string' , 'Constituency');
+      for (var i in grades) {
+          data.addColumn('number', grade_labels[grades[i]]);
+      }
+      row = ['Bangalore']
+      values = []
+      for (var i in grades) {
+          score = info["sch_assess_bang"][grades[i]] == undefined ? 0 : info["sch_assess_bang"][grades[i]];
+          score = score * 100/ info["sch_assess_bang"]["total"];
+          values.push(score);
+      }
+      data.addRow(row.concat(roundPerc(values,100)));
+
+      var chart1 = new google.visualization.BarChart(document.getElementById('schassesscomp_gph'));
+      chart1.draw(data, {width: 750, height: 150, bar:{groupWidth:'35%'},chartArea:{width:'70%'},  title: translations['H121'],colors:['E6550D','FDAE6B','FFEDA0','ADDD8E','31A354'],isStacked:true});
+}
 
 function ang_assess_chart()
 {
@@ -184,6 +207,25 @@ function ang_assess_chart()
      var bgr = info["ang_assess_bang_gender"]["female"];
      document.getElementById('angassess_boy').innerHTML = drawIcons(br,gr,bbr,bgr,1,'B');
      document.getElementById('angassess_girl').innerHTML = drawIcons(br,gr,bbr,bgr,1,'G');
+     document.getElementById('angassess_bang_boy').innerHTML = drawIcons(br,gr,bbr,bgr,2,'B');
+     document.getElementById('angassess_bang_girl').innerHTML = drawIcons(br,gr,bbr,bgr,2,'G');
+}
+
+function ang_blore_only()
+{
+     var svghtml= '<svg width="100%" height="210px" width="400px" version="1.0" xmlns="http://www.w3.org/2000/svg">'
+     var _cx = 180;
+     var _cy = 100;
+     var bang_r = info["ang_assess_bang"]
+     svghtml = svghtml + drawCircle(_cx,_cy,bang_r,'Bangalore','#848484');
+     svghtml = svghtml + '</svg>';
+     document.getElementById('angassessbang_gph').innerHTML = svghtml
+     var bbr = info["ang_assess_bang_gender"]["male"];
+     var bgr = info["ang_assess_bang_gender"]["female"];
+     var br = 0;
+     var gr = 0; 
+     var bbr = info["ang_assess_bang_gender"]["male"];
+     var bgr = info["ang_assess_bang_gender"]["female"];
      document.getElementById('angassess_bang_boy').innerHTML = drawIcons(br,gr,bbr,bgr,2,'B');
      document.getElementById('angassess_bang_girl').innerHTML = drawIcons(br,gr,bbr,bgr,2,'G');
 }
