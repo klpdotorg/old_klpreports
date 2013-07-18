@@ -187,7 +187,7 @@ function ang_assess_chart()
      var _cx = 180;
      var _cy = 100;
      var bang_r = info["ang_assess_bang"]
-     svghtml = svghtml + drawCircle(_cx,_cy,bang_r,'Bangalore','#848484');
+     svghtml = svghtml + drawCircle(_cx,_cy,bang_r,'Bangalore','#CCC');
      svghtml = svghtml + '</svg>';
      document.getElementById('angassessbang_gph').innerHTML = svghtml
 
@@ -219,7 +219,7 @@ function ang_blore_only()
      var _cx = 180;
      var _cy = 100;
      var bang_r = info["ang_assess_bang"]
-     svghtml = svghtml + drawCircle(_cx,_cy,bang_r,'Bangalore','#848484');
+     svghtml = svghtml + drawCircle(_cx,_cy,bang_r,'Bangalore','#CCC');
      svghtml = svghtml + '</svg>';
      document.getElementById('angassessbang_gph').innerHTML = svghtml
      var bbr = info["ang_assess_bang_gender"]["male"];
