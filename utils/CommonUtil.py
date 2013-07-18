@@ -5,9 +5,9 @@ import sys, os,traceback
 import db.KLPDB
 import db.Queries
 
-connection = db.KLPDB.getConnection()
-cursor = connection.cursor()
-
+#connection = db.KLPDB.getConnection()
+#cursor = connection.cursor()
+cursor = db.KLPDB.getWebDbConnection()
 class CommonUtil:
 
   def constituencyData(self,constype,constid):
@@ -23,23 +23,20 @@ class CommonUtil:
       #  constype_str = "mla"
       #elif constype == 3:
       #  constype_str = "corporator"
-      cursor.execute(db.Queries.getDictionary(constype)[constype_str + '_const_details'],constid)
-      result = cursor.fetchall()
+      result = cursor.query(db.Queries.getDictionary(constype)[constype_str + '_const_details'],{'s':constid})
       for row in result:
-        data['const_name'] = row[1].strip() if row[1] != None else ''
-        data['const_type'] = row[3].strip() if row[3] != None else ''
-        data['const_code'] = row[0] if row[0] != None else ''
-        data['const_rep'] = row[2].strip() if row[2] != None else ''
-        data['const_party'] = row[5].strip() if row[5] != None else ''
-        if row[4] != None:
-          neighbours = row[4].strip().split('|')
-          neighbours.append(row[0])
-      connection.commit()
+        data['const_name'] = row.const_ward_name.strip() if row.const_ward_name != None else ''
+        data['const_type'] = row.const_ward_type.strip() if row.const_ward_type != None else ''
+        data['const_code'] = row.elec_comm_code if row.elec_comm_code != None else ''
+        data['const_rep'] = row.current_elected_rep.strip() if row.current_elected_rep != None else ''
+        data['const_party'] = row.current_elected_party.strip() if row.current_elected_party != None else ''
+        if row.neighbours != None:
+          neighbours = row.neighbours.strip().split('|')
+          neighbours.append(row.elec_comm_code)
       return [data,neighbours,constype_str]
     except:
       print "Unexpected error:", sys.exc_info()
       traceback.print_exc(file=sys.stdout)
-      connection.rollback()
 
   def countsTable(self,cons_type,constid,qkeys):
     try:
@@ -53,17 +50,14 @@ class CommonUtil:
       data = {}
       tabledata = {}
       for querykey in qkeys:
-        cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey], constid)
-        result = cursor.fetchall()
+        result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey], {'s':constid})
         for row in result:
-          tabledata[querykey] = str(row[0])
+          tabledata[querykey] = str(row.count)
       data["inst_counts"] =  tabledata
-      connection.commit()
       return data
     except:
       print "Unexpected error:", sys.exc_info()
       traceback.print_exc(file=sys.stdout)
-      connection.rollback()
       return None
 
   def getTranslations(self, lang):

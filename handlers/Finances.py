@@ -7,8 +7,9 @@ import db.KLPDB
 import db.Queries
 from utils.CommonUtil import CommonUtil
 
-connection = db.KLPDB.getConnection()
-cursor = connection.cursor()
+#connection = db.KLPDB.getConnection()
+#cursor = connection.cursor()
+cursor = db.KLPDB.getWebDbConnection()
 
 class Finances:
 
@@ -35,44 +36,38 @@ class Finances:
     data = {}
     tabledata = {}
     querykey = 'tlmgrant_sch' 
-    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-    result = cursor.fetchall()
+    result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
     for row in result:
-      tabledata['grant_amount'] = str(row[3])
-      tabledata['teacher_count'] = str(int(row[3])/int(row[2]))
+      tabledata['grant_amount'] = str(row.total_grant)
+      tabledata['teacher_count'] = str(int(row.total_grant)/int(row.grant_amount))
     data[querykey] = tabledata
     data['total_tlm']=int(tabledata['grant_amount'])
-    connection.commit()
     return data
   
   def getAnnualGrant(self,constype,constid):
     data = {}
     tabledata = {}
     querykey = 'annualgrant_sch' 
-    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-    result = cursor.fetchall()
+    result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
     total_grant = 0
     for row in result:
-      tabledata[row[1]] = [str(row[3]),str(row[4])]
-      total_grant = total_grant + int(row[4])
+      tabledata[row.cat] = [str(row.count),str(row.total_grant)]
+      total_grant = total_grant + int(row.total_grant)
     data[querykey] = tabledata
     data['total_annual'] = total_grant
-    connection.commit()
     return data
    
   def getMaintenanceGrant(self,constype,constid):
     data = {}
     tabledata = {}
     querykey = 'mtncgrant_sch' 
-    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-    result = cursor.fetchall()
+    result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
     total_grant = 0
     for row in result:
-      tabledata[row[2]] = [str(row[3]), str(row[4])]
-      total_grant = total_grant + int(row[4])
+      tabledata[row.classroom_count] = [str(row.count), str(row.total_grant)]
+      total_grant = total_grant + int(row.total_grant)
     data[querykey] = tabledata
     data['total_mntc'] = total_grant
-    connection.commit()
     return data
 
   def neighboursData(self, neighbours, constype):
@@ -84,25 +79,22 @@ class Finances:
         crit='neighbor_'
         query_keys = ['tlm','annual','mntnc'] 
         for key in query_keys:
-          cursor.execute(db.Queries.getDictionary(constype)[constype_str+'_'+crit+key], [tuple(neighbours)])
-          result = cursor.fetchall()
+          result = cursor.query(db.Queries.getDictionary(constype)[constype_str+'_'+crit+key], {'s':tuple(neighbours)})
           for row in result:
-            if row[0].strip() in tabledata.keys():
-              if key in tabledata[row[0].strip()].keys():
-                addedup = int(tabledata[row[0].strip()][key]) + int(row[3])
-                tabledata[row[0].strip()][key] = addedup
+            if row.const_ward_name.strip() in tabledata.keys():
+              if key in tabledata[row.const_ward_name.strip()].keys():
+                addedup = int(tabledata[row.const_ward_name.strip()][key]) + int(row.total_grant)
+                tabledata[row.const_ward_name.strip()][key] = addedup
               else:
-                tabledata[row[0].strip()][key] = row[3]
+                tabledata[row.const_ward_name.strip()][key] = row.total_grant
             else:
-              tabledata[row[0].strip()]={key:row[3]}
+              tabledata[row.const_ward_name.strip()]={key:row.total_grant}
       data['neighbours_grant'] = tabledata
-      connection.commit()
       return data
     except:
       print 'Error occurred'
       print "Unexpected error:", sys.exc_info()
       traceback.print_exc(file=sys.stdout)
-      connection.rollback()
       return None
 
   def constituencyData(self,constype,constid):

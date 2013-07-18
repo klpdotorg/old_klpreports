@@ -98,7 +98,7 @@ class Charts:
       data.update(utils.NutritionUtil.getNutriText(data,lang))
       web.header('Content-Type','text/html; charset=utf-8')
       return render.nutrition(simplejson.dumps(data,sort_keys=True))
-    elif rep_type == 'learning':
+    elif rep_type.lower() == 'learning':
       queries = ['abs_schcount','abs_preschcount']
       data.update(util.countsTable(constype,[constid],queries))
       learning = Learning()

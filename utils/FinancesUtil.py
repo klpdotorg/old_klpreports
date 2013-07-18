@@ -50,7 +50,7 @@ def getFinancesText(data,lang):
       neighbours = data["neighbours_grant"].keys()
       if neighbours:
         neighbours.remove(data['const_name'])
-        neighbours_txt_str = '' + data['const_name'] + ' ' + transDict['11'] + ', '.join(neighbours) + '. ' + transDict['12']
+        #neighbours_txt_str = '' + data['const_name'] + ' ' + transDict['11'] + ', '.join(neighbours) + '. ' + transDict['12']
       data['neighbours_txt'] = neighbours_txt_str + transDict['15']
     
       data['source_txt'] = transDict['16']

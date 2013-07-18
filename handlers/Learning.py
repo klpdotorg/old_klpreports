@@ -7,8 +7,9 @@ import db.KLPDB
 import db.Queries
 from utils.CommonUtil import CommonUtil
 
-connection = db.KLPDB.getConnection()
-cursor = connection.cursor()
+#connection = db.KLPDB.getConnection()
+#cursor = connection.cursor()
+cursor = db.KLPDB.getWebDbConnection()
 
 class Learning:
 
@@ -37,39 +38,33 @@ class Learning:
     queries = ['sch_assess_class','sch_assess_gender'] 
     for querykey in queries:
       tabledata = {}
-      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-      result = cursor.fetchall()
+      result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
       for row in result:
-        if row[0] in tabledata.keys():
-          tabledata[row[0]][row[1]] = row[2]
+        if row.a1 in tabledata.keys():
+          tabledata[row.a1][row.grade] = row.count
         else:
-          tabledata[row[0]] = {row[1]:row[2]}
+          tabledata[row.a1] = {row.grade:row.count}
       for each in tabledata.keys():
         tabledata[each]["total"] = sum(tabledata[each].values())
       data[querykey] = tabledata
-      connection.commit()
     queries = ['sch_assess_bang','sch_assess_const'] 
     for querykey in queries:
       tabledata = {}
-      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-      result = cursor.fetchall()
+      result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
       for row in result:
-        if row[0] not in tabledata.keys():
-          tabledata[row[0]] = row[1]
+        if row.grade not in tabledata.keys():
+          tabledata[row.grade] = row.count
       tabledata["total"] = sum(tabledata.values())
       data[querykey] = tabledata
-      connection.commit()
     querykey = 'sch_assess_cnt' 
-    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-    result = cursor.fetchall()
+    result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
     for row in result:
-      data[querykey] = row[0]
-      data['sch_assess_stucnt'] = row[1]
+      data[querykey] = row.schcount
+      data['sch_assess_stucnt'] = row.stucount
     querykey = 'sch_assess_bang_cnt' 
-    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-    result = cursor.fetchall()
+    result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
     for row in result:
-      data[querykey] = row[0]
+      data[querykey] = row.count
     return data
   
   def getAngAssessment(self,constype,constid):
@@ -77,31 +72,25 @@ class Learning:
     queries = ['ang_assess_score','ang_assess_bang']
     for querykey in queries:
       tabledata = {}
-      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-      result = cursor.fetchall()
+      result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
       for row in result:
-        data[querykey] = row[0] 
-      connection.commit()
+        data[querykey] = row.res
     queries = ['ang_assess_gender','ang_assess_bang_gender']
     for querykey in queries:
       tabledata = {}
-      cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-      result = cursor.fetchall()
+      result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
       for row in result:
-        tabledata[row[0]] = row[1]
+        tabledata[row.gender] = row.res
       data[querykey] = tabledata
-      connection.commit()
     querykey = 'ang_assess_cnt' 
-    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-    result = cursor.fetchall()
+    result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
     for row in result:
-      data[querykey] = row[0]
-      data['ang_assess_stucnt'] = row[1]
+      data[querykey] = row.count
+      data['ang_assess_stucnt'] = row.sum
     querykey = 'ang_assess_bang_cnt' 
-    cursor.execute(db.Queries.getDictionary(constype)[constype + '_' + querykey],constid)
-    result = cursor.fetchall()
+    result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':constid})
     for row in result:
-      data[querykey] = row[0]
+      data[querykey] = row.count
     return data
 
   def constituencyData(self,constype,constid):
@@ -120,19 +109,16 @@ class Learning:
       if len(neighbours) > 0:
         query_keys = ['ang_assess_neighbor']
         for key in query_keys:
-          cursor.execute(db.Queries.getDictionary(constype)[constype_str+'_'+key], [tuple(neighbours)])
-          result = cursor.fetchall()
+          result = cursor.query(db.Queries.getDictionary(constype)[constype_str+'_'+key], {'s':tuple(neighbours)})
           for row in result:
-            if row[0].strip() in tabledata.keys():
-              tabledata[row[0].strip()][row[1]]=row[2]
+            if row.const_ward_name.strip() in tabledata.keys():
+              tabledata[row.const_ward_name.strip()][row.gender]=row.res
             else:
-              tabledata[row[0].strip()]={row[1]:row[2]}
+              tabledata[row.const_ward_name.strip()]={row.gender:row.res}
           data[key] = tabledata
-      connection.commit()
       return data
     except:
       print 'Error occurred'
       print "Unexpected error:", sys.exc_info()
       traceback.print_exc(file=sys.stdout)
-      connection.rollback()
       return None
