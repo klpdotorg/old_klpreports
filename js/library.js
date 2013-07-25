@@ -29,8 +29,8 @@ function initialise(data)
                                                + info['const_name'] + "</h1>";
   document.getElementById("constinfo").innerHTML =  "<dl class='header-def'><dt>" + translations['H8'] + "</dt><dd>"
                            + info["const_code"] + "</dd>"
-                           /* + "<dt>" + translations['H9'] + "</dt><dd>" + info["const_rep"] + "</dd>"
-                           + "<dt>" + translations['H10'] + "</dt><dd>" + info["const_party"] + "</dd>" */
+                           + "<dt>" + translations['H9'] + "</dt><dd>" + info["const_rep"] + "</dd>"
+                           + "<dt>" + translations['H10'] + "</dt><dd>" + info["const_party"] + "</dd>"
 			   + "</dl>";
   document.getElementById("hiddenip").innerHTML = '<input type="hidden" name="const_type" value="'+ info["constype"] + '" />' +
   '<input type="hidden" name="const_id" value="'+ info["const_id"] + '" />' +

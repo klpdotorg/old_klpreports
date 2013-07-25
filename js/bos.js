@@ -44,8 +44,8 @@ BarsOfStuff = function(container) {
 BarsOfStuff.nextId = 0;
 
 BarsOfStuff.STYLES = [
-  {name:'boy', img: 'Boy_ph.png', height: 40, headImg: 'Boy.png', headWidth: 21},
-  {name:'girl', img: 'Girl_ph.png', height: 40, headImg: 'Girl.png', headWidth:21},
+  {name:'boy', img: 'Boy.png', height: 40, headImg: 'Boy.png', headWidth: 21},
+  {name:'girl', img: 'Girl.png', height: 40, headImg: 'Girl.png', headWidth:21},
 ];
 
 BarsOfStuff.IMGPATH = '/images/';

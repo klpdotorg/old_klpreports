@@ -64,7 +64,7 @@ def getDemographicsText(data,lang):
         choice = 'neighbours_presch'
       neighbours = data[choice].keys()
       neighbours.remove(data['const_name'])
-      #neighbours_txt_str = '<br/><br/>' + data['const_name'] + ' ' + transDict['19'] + ', '.join(neighbours) + '. ' + transDict['20']
+      neighbours_txt_str = '<br/><br/>' + data['const_name'] + ' ' + transDict['19'] + ', '.join(neighbours) + '. ' + transDict['20']
     data['neighbours_txt'] = neighbours_txt_str + transDict['21'] + transDict['27']
     return data
 
