@@ -23,7 +23,9 @@ import utils.InfraUtil
 import utils.LibraryUtil
 import utils.NutritionUtil
 import utils.LearningUtil
+
 from utils.CommonUtil import CommonUtil
+from utils.Links import Links 
 
 from handlers.Demographics import Demographics
 from handlers.Infrastructure import Infrastructure
@@ -35,10 +37,26 @@ from handlers.Learning import Learning
 render = web.template.render('templates/')
 
 urls = (
+     '/','Index',
      '/charts/(.*)/(.*)/(.*)/(.*)','Charts',
 )
 
 application = web.application(urls,globals()).wsgifunc()
+
+class Index:
+  def GET(self):
+    data = {}
+    links = Links()
+    data.update({"mp":links.getMPreports()})
+    data.update({"mla":links.getMLAreports()})
+    #data.update(links.getWardreports())
+    #data.update(links.getSchDistreports())
+    data.update({"block":links.getBlkreports()})
+    data.update({"cluster":links.getClusreports()})
+    #data.update(links.getPreDistreports())
+    #data.update(links.getProjreports())
+    #data.update(links.getCircreports())'''
+    return render.index(simplejson.dumps(data,sort_keys=True))
 
 class Charts:
   

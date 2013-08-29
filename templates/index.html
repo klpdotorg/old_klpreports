@@ -1,15 +1,156 @@
-$def with (form)
-
+$def with (data)
 <html>
   <head>
-    <title>MP / MLA Charts</title>
-    <link rel='stylesheet' href='/css/style.css' type='text/css'>
+  <title>KLP Reports</title>
+  <script type="text/javascript" src="js/simpletreemenu.js"></script>
+  <script type="text/javascript" src="js/links.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/simpletree.css" />
+  <link rel="stylesheet" type="text/css" href="css/grid.css" />
+  <link rel="stylesheet" type="text/css" href="css/link_style.css" />
   </head>
-  <body>
-    <div>
-      <form method="POST">
-        $:form.render()
-      </form>
+  <body" >
+
+<div class="container container_12">
+<!--======================-->
+    <div class="clearheader">&nbsp;</div>
+  <div class="grid_12"><h1>KLP Reports </h1></div>
+  <div class="clearbreak">&nbsp;</div>
+  <hr></hr>
+    <div class="grid_4">
+  <ul rel="open"id="treemenu2" class="treeview">
+  <li>Demographics
+    <ul rel="open">
+      <li><a href="#" onClick="displayPane($data,'mp','demographics');">MP Reports</a></li>
+      <li><a href="#" onClick="displayPane($data,'mla','demographics');">MLA Reports</a></li>
+      <li>Corporator Reports</li>
+      <li>School Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Block</li>
+          <li>Cluster</li>
+        </ul>
+      </li> 
+      <li>Preschool Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Project</li>
+          <li>Circle</li>
+        </ul> 
+      </li>
+    </ul>
+  </li>
+  <li>Finance
+    <ul rel="open">
+      <li><a href="#" onClick="displayPane($data,'mp','finance');">MP Reports</a></li>
+      <li><a href="#" onClick="displayPane($data,'mla','finance');">MLA Reports</a></li>
+      <li>Corporator Reports</li>
+      <li>School Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Block</li>
+          <li>Cluster</li>
+        </ul> 
+      </li> 
+      <li>Preschool Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Project</li>
+          <li>Circle</li>
+        </ul> 
+      </li>
+    </ul>
+  </li>
+  <li>Infrastructure
+    <ul rel="open">
+      <li><a href="#" onClick="displayPane($data,'mp','infrastructure');">MP Reports</a></li>
+      <li><a href="#" onClick="displayPane($data,'mla','infrastructure');">MLA Reports</a></li>
+      <li>Corporator Reports</li>
+      <li>School Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Block</li>
+          <li>Cluster</li>
+        </ul>
+      </li> 
+      <li>Preschool Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Project</li>
+          <li>Circle</li>
+        </ul> 
+      </li>
+    </ul>
+  </li>
+  <li>Library
+    <ul rel="open">
+      <li><a href="#" onClick="displayPane($data,'mp','library');">MP Reports</a></li>
+      <li><a href="#" onClick="displayPane($data,'mla','library');">MLA Reports</a></li>
+      <li>Corporator Reports</li>
+      <li>School Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Block</li>
+          <li>Cluster</li>
+        </ul> 
+      </li>
+      <li>Preschool Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Project</li>
+          <li>Circle</li>
+        </ul> 
+      </li>
+    </ul>
+  </li>
+  <li>Learning
+    <ul rel="open">
+      <li><a href="#" onClick="displayPane($data,'mp','learning');">MP Reports</a></li>
+      <li><a href="#" onClick="displayPane($data,'mla','learning');">MLA Reports</a></li>
+      <li>Corporator Reports</li>
+      <li>School Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Block</li>
+          <li>Cluster</li>
+        </ul> 
+      </li>
+      <li>Preschool Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Project</li>
+          <li>Circle</li>
+        </ul> 
+      </li>
+    </ul>
+  <li>Nutrition
+    <ul rel="open">
+      <li>MP Reports</li>
+      <li>MLA Reports</li>
+      <li>Corporator Reports</li>
+      <li>School Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li><a href="#" onClick="displayPane($data,'block','nutrition');">Block</a></li>
+          <li><a href="#" onClick="displayPane($data,'cluster','nutrition');">Cluster</a></li>
+        </ul> 
+      </li>
+      <li>Preschool Boundaries
+        <ul rel="open">
+          <li>District</li>
+          <li>Project</li>
+          <li>Circle</li>
+        </ul> 
+      </li>
+    </ul>
+  </li>
+</ul>
     </div>
+ <div class="grid_8">
+  <div id="content_pane">
+</div>
+</div> <!--closing container -->
   </body>
+  <script type="text/javascript">
+    ddtreemenu.createTree("treemenu2", true, 5)
+  </script>
 </html>

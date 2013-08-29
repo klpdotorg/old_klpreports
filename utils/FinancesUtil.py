@@ -1,11 +1,12 @@
 import csv
 import traceback
+import codecs
 
 import sys, os,traceback
 
 def getFinancesText(data,lang):
     transDict = {}
-    f = open(os.path.join(os.getcwd(),'translations/fin_translations_text.csv'),'r')
+    f = codecs.open(os.path.join(os.getcwd(),'translations/fin_translations_text.csv'),'r','utf-8')
     for line in f.readlines():
       text = line.split('|')
       if lang == 2:
@@ -50,11 +51,13 @@ def getFinancesText(data,lang):
       neighbours = data["neighbours_grant"].keys()
       if neighbours:
         neighbours.remove(data['const_name'])
+        neighbours_txt_str = ' ' + data['const_name'] + ' ' 
         print transDict['11']
-        print transDict['12']
-        neighbours_txt_str = '' + data['const_name'] + ' ' + transDict['11'] + ', '.join(neighbours) + '. ' + transDict['12']
+        print transDict['11'].encode("utf-8")
+        neighbours_txt_str = neighbours_txt_str + transDict['11']
+        neighbours_txt_str = neighbours_txt_str + ', '.join(neighbours) + '. ' 
+        neighbours_txt_str = neighbours_txt_str + transDict['12']
       data['neighbours_txt'] = neighbours_txt_str + transDict['15']
-    
       data['source_txt'] = transDict['16']
     return data
 

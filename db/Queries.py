@@ -8,6 +8,15 @@ common_queries = {
 'get_ai_avg_blore':"select distinct aia.ai_metric as a1, count(distinct aia.sid),aia.ai_group as a2 from vw_ang_infra_agg aia, tb_school_electedrep tse where tse.sid=aia.sid and aia.perc_score=100 group by aia.ai_metric,aia.ai_group;",
 'get_ai_count_blore':"select count(distinct aia.sid) from vw_ang_infra_agg aia, tb_school_electedrep tse where tse.sid=aia.sid;",
 'get_ang_count_blore':"select count(distinct tse.sid) from tb_school_electedrep tse where heirarchy=2;",
+'get_mp_ids':"select distinct mp.const_ward_name, se.mp_const_id from tb_school_electedrep se,tb_electedrep_master mp where mp.id = se.mp_const_id;",
+'get_mla_ids':"select distinct mla.const_ward_name, se.mla_const_id from tb_school_electedrep se,tb_electedrep_master mla where mla.id = se.mla_const_id;",
+'get_ward_ids':"select distinct ward.const_ward_name, se.ward_id from tb_school_electedrep se,tb_electedrep_master ward where ward.id = se.ward_id;",
+'get_schdist':"select distinct district,dist_id from vw_school_dise where sid in (select sid from tb_school_electedrep ) and type=1;",
+'get_preschdist':"select distinct district,dist_id from vw_school_dise where sid in (select sid from tb_school_electedrep ) and type=2;",
+'get_block':"select distinct block,blck_id from vw_school_dise where sid in (select sid from tb_school_electedrep ) and type=1;",
+'get_cluster':"select distinct clust,clst_id from vw_school_dise where sid in (select sid from tb_school_electedrep ) and type=1;",
+'get_proj':"select distinct block,blck_id from vw_school_dise where sid in (select sid from tb_school_electedrep ) and type=1;",
+'get_circle':"select distinct clust,clst_id from vw_school_dise where sid in (select sid from tb_school_electedrep ) and type=2;",
 }
 
 mla_queries = {
@@ -181,17 +190,17 @@ corporator_queries = {
 }
 
 cluster_queries = {
-'cluster_mdm_agg':"select mon,wk,sum(indent) as indent,sum(attend) as attend, sd.clust as name from vw_school_dise_new sd, vw_mdm_agg mdm where mdm.id=sd.sid and sd.clst_id=$s group by mon,wk,clust order by mon,wk;",
-'cluster_klp_enrol':"select sum(case when sex='Boy' then tssc.numstu end) as num_boys,sum(case when sex='Girl' then tssc.numstu end) as num_girls from vw_school_dise_new sd, tb_school_stu_counts tssc where tssc.sid=sd.sid and sd.clst_id=$s and sd.sid in (select distinct id from vw_mdm_agg);",
-'cluster_dise_enrol':"select sum(boys_count) as num_boys,sum(girls_count) as num_girls from vw_school_dise_new sd,vw_dise_info vdi where vdi.dise_code=sd.dise_code and sd.clst_id=$s and sd.sid in (select distinct id from vw_mdm_agg);",
-'cluster_sch_count':"select count(distinct sd.sid) as a1,count(distinct mdm.id) as a2 from vw_school_dise_new sd left join vw_mdm_agg mdm on mdm.id=sd.sid where sd.clst_id=$s;"
+'cluster_mdm_agg':"select mon,wk,sum(indent) as indent,sum(attend) as attend, sd.clust as name from vw_school_dise sd, vw_mdm_agg mdm where mdm.id=sd.sid and sd.clst_id=$s group by mon,wk,clust order by mon,wk;",
+'cluster_klp_enrol':"select sum(case when sex='Boy' then tssc.numstu end) as num_boys,sum(case when sex='Girl' then tssc.numstu end) as num_girls from vw_school_dise sd, tb_school_stu_counts tssc where tssc.sid=sd.sid and sd.clst_id=$s and sd.sid in (select distinct id from vw_mdm_agg);",
+'cluster_dise_enrol':"select sum(boys_count) as num_boys,sum(girls_count) as num_girls from vw_school_dise sd,vw_dise_info vdi where vdi.dise_code=sd.dise_code and sd.clst_id=$s and sd.sid in (select distinct id from vw_mdm_agg);",
+'cluster_sch_count':"select count(distinct sd.sid) as a1,count(distinct mdm.id) as a2 from vw_school_dise sd left join vw_mdm_agg mdm on mdm.id=sd.sid where sd.clst_id=$s;"
 }
 
 block_queries = {
-'block_mdm_agg':"select mon,wk,sum(indent) as indent,sum(attend) as attend, sd.block as name from vw_school_dise_new sd, vw_mdm_agg mdm where mdm.id=sd.sid and sd.blck_id=$s group by mon,wk,block order by mon,wk;",
-'block_klp_enrol':"select sum(case when sex='Boy' then tssc.numstu end) as num_boys,sum(case when sex='Girl' then tssc.numstu end) as num_girls from vw_school_dise_new sd, tb_school_stu_counts tssc where tssc.sid=sd.sid and sd.blck_id=$s and sd.sid in (select distinct id from vw_mdm_agg);",
-'block_dise_enrol':"select sum(boys_count) as num_boys,sum(girls_count) as num_girls from vw_school_dise_new sd,vw_dise_info vdi where vdi.dise_code=sd.dise_code and sd.blck_id=$s and sd.sid in (select distinct id from vw_mdm_agg);",
-'block_sch_count':"select count(distinct sd.sid) as a1,count(distinct mdm.id) as a2 from vw_school_dise_new sd left join vw_mdm_agg mdm on mdm.id=sd.sid where sd.blck_id=$s;"
+'block_mdm_agg':"select mon,wk,sum(indent) as indent,sum(attend) as attend, sd.block as name from vw_school_dise sd, vw_mdm_agg mdm where mdm.id=sd.sid and sd.blck_id=$s group by mon,wk,block order by mon,wk;",
+'block_klp_enrol':"select sum(case when sex='Boy' then tssc.numstu end) as num_boys,sum(case when sex='Girl' then tssc.numstu end) as num_girls from vw_school_dise sd, tb_school_stu_counts tssc where tssc.sid=sd.sid and sd.blck_id=$s and sd.sid in (select distinct id from vw_mdm_agg);",
+'block_dise_enrol':"select sum(boys_count) as num_boys,sum(girls_count) as num_girls from vw_school_dise sd,vw_dise_info vdi where vdi.dise_code=sd.dise_code and sd.blck_id=$s and sd.sid in (select distinct id from vw_mdm_agg);",
+'block_sch_count':"select count(distinct sd.sid) as a1,count(distinct mdm.id) as a2 from vw_school_dise sd left join vw_mdm_agg mdm on mdm.id=sd.sid where sd.blck_id=$s;"
 }
 
 def getDictionary(constype = 'common'):
