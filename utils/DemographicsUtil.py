@@ -58,14 +58,12 @@ def getDemographicsText(data,lang):
 
 
     #Neighbours Text
-    if 'neighbours_sch_hasdata' not in data.keys():
+    if 'neighbours_sch' in data.keys():
       choice = 'neighbours_sch'
       if len(data['neighbours_presch'].keys()) > len(data['neighbours_sch'].keys()):
         choice = 'neighbours_presch'
       neighbours = data[choice].keys()
       neighbours.remove(data['const_name'])
-      print neighbours
-      print data['const_name']
       neighbours_txt_str = '<br/><br/>' + data['const_name'] + ' ' + transDict['19'] + ', '.join(neighbours) + '. ' + transDict['20']
     data['neighbours_txt'] = neighbours_txt_str + transDict['21'] + transDict['27']
     return data

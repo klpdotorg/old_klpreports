@@ -49,7 +49,7 @@ class Index:
     links = Links()
     data.update({"mp":links.getMPreports()})
     data.update({"mla":links.getMLAreports()})
-    #data.update(links.getWardreports())
+    data.update({"corporator":links.getWardreports()})
     #data.update(links.getSchDistreports())
     data.update({"block":links.getBlkreports()})
     data.update({"cluster":links.getClusreports()})

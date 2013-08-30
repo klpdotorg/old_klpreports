@@ -24,7 +24,11 @@ class Links:
     return mlas
 
   def getWardreports(self):
-    pass
+    wards = {}
+    result = cursor.query(db.Queries.getDictionary("common")['get_ward_ids'])
+    for row in result:
+      wards[row['const_ward_name']] = row['ward_id']
+    return wards
 
   def getSchDistreports(self):
     pass

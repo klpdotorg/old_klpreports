@@ -48,12 +48,12 @@ def getFinancesText(data,lang):
       data['mtnc_txt'] = mtnc_txt_str
   
       #---------------------- Neighbours
-      neighbours = data["neighbours_grant"].keys()
+      neighbours = None
+      if "neighbours_grant" in data.keys():
+        neighbours = data["neighbours_grant"].keys()
       if neighbours:
         neighbours.remove(data['const_name'])
         neighbours_txt_str = ' ' + data['const_name'] + ' ' 
-        print transDict['11']
-        print transDict['11'].encode("utf-8")
         neighbours_txt_str = neighbours_txt_str + transDict['11']
         neighbours_txt_str = neighbours_txt_str + ', '.join(neighbours) + '. ' 
         neighbours_txt_str = neighbours_txt_str + transDict['12']

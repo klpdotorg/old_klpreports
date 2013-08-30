@@ -102,5 +102,7 @@ class Finances:
     util = CommonUtil()
     ret_data = util.constituencyData(constype,constid)
     data.update(ret_data[0])
-    data.update(self.neighboursData(ret_data[1],ret_data[2]))
+    neighbors = self.neighboursData(ret_data[1],ret_data[2])
+    if neighbors:
+      data.update(neighbors)
     return data
