@@ -14,3 +14,12 @@ function displayPane(dat,cons,typ)
   content_str = content_str +  '</div><br/>For older PDF reports <a href="http://www.klp.org.in/listFiles/1" target="_blank">click here</a>';
   document.getElementById('content_pane').innerHTML = content_str;
 }
+
+String.prototype.toTitleCase = function() {
+    var aStr = this.split(' ');
+    var aProp = [];
+    for (str in aStr) {
+        aProp.push(aStr[str].charAt(0).toUpperCase() + aStr[str].slice(1));
+    }
+    return aProp.join(' ');
+};
