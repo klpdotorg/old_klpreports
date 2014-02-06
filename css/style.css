@@ -563,7 +563,7 @@ a {
     .top-nav ul li.home a {
       background-repeat: no-repeat;
       background-position: left center;
-      background-image: url("../images/KLP_logo.png");
+      background-image: url("../images/KLP_logo@1x.png");
       text-indent: 100%;
       white-space: nowrap;
       overflow: hidden;

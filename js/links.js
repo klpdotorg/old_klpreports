@@ -1,7 +1,7 @@
 function displayPane(dat,cons,typ)
 {
   var the_list = dat[cons];
-  heading_str = "<h1>" + cons.toUpperCase() + " Reports - " + typ.toUpperCase() + "</h1>";
+  heading_str = "<h3>" + cons.toUpperCase() + " Reports - " + typ.toUpperCase() + "</h3>";
   content_str = heading_str + '<div class="div-table">';
   for (key in the_list)
   {
