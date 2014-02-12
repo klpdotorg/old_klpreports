@@ -9,6 +9,7 @@ background: url(/images/treemenu/list.png) no-repeat left center;
 list-style-type: none;
 padding-left: 22px;
 margin-bottom: 3px;
+font-size: 16px;
 }
 
 .treeview li.submenu{ /* Style for LI that contains sub lists (other ULs). */
