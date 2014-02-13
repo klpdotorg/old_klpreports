@@ -16,7 +16,7 @@ $def with (data)
   <link type="text/css" rel="stylesheet" href="/js/lib/iCheck/skins/minimal/minimal.css"/>
     
   </head>
-  <body>
+  <body onLoad="showErrorsIfAny($data);">
   
   <header class="main-header">
     <div class="header-content">
@@ -156,7 +156,9 @@ $def with (data)
 </ul>
     </div>
  <div class="grid_8">
-  <div id="content_pane">
+  <div id="content_pane"></div>
+  <div id="error_pane" style="visibility:hidden"></div>
+  
 </div>
 </div> <!--closing container -->
   </body>

@@ -1,5 +1,6 @@
 function displayPane(dat,cons,typ)
 {
+  document.getElementById('error_pane').style.visibility="hidden";
   var the_list = dat[cons];
   heading_str = "<p class='bordered_text'>" + cons.toUpperCase() + " Reports - " + typ.toTitleCase() + "</p>";
   content_str = heading_str + '<div class="div-table">';
@@ -15,6 +16,12 @@ function displayPane(dat,cons,typ)
   document.getElementById('content_pane').innerHTML = content_str;
 }
 
+function showErrorsIfAny(data)
+{
+  if (data["errormsg"] != undefined)
+    document.getElementById('error_pane').style.visibility="visible";
+    document.getElementById('error_pane').innerHTML = '<p class="bordered_text"><span style="color:red">' + data["errormsg"] + '</span></p>'; 
+}
 String.prototype.toTitleCase = function() {
     var aStr = this.split(' ');
     var aProp = [];

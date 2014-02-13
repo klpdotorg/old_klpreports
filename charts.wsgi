@@ -38,31 +38,41 @@ render = web.template.render('templates/')
 
 urls = (
      '/','Index',
+     '/errors','Errors',
      '/charts/(.*)/(.*)/(.*)/(.*)','Charts',
 )
 
 application = web.application(urls,globals()).wsgifunc()
 
+def treemenu():
+  data = {}
+  links = Links()
+  data.update({"mp":links.getMPreports()})
+  data.update({"mla":links.getMLAreports()})
+  data.update({"corporator":links.getWardreports()})
+  #data.update(links.getSchDistreports())
+  #data.update({"block":links.getBlkreports()})
+  #data.update({"cluster":links.getClusreports()})
+  #data.update(links.getPreDistreports())
+  #data.update(links.getProjreports())
+  #data.update(links.getCircreports())'''
+  return data
+
 class Index:
   def GET(self):
-    data = {}
-    links = Links()
-    data.update({"mp":links.getMPreports()})
-    data.update({"mla":links.getMLAreports()})
-    data.update({"corporator":links.getWardreports()})
-    #data.update(links.getSchDistreports())
-    data.update({"block":links.getBlkreports()})
-    data.update({"cluster":links.getClusreports()})
-    #data.update(links.getPreDistreports())
-    #data.update(links.getProjreports())
-    #data.update(links.getCircreports())'''
+    return render.index(simplejson.dumps(treemenu(),sort_keys=True))
+
+class Errors:
+  def GET(self):
+    data = treemenu()
+    data.update({"errormsg":"Sorry! This report is currently unavailable due to insufficient data."})
     return render.index(simplejson.dumps(data,sort_keys=True))
 
 class Charts:
   
   """Returns the main template"""
   def GET(self,searchby,constid,rep_lang,rep_type):
-    #try:
+    try:
       if searchby.lower() == 'mp':
         constype = 1
       elif searchby.lower() == 'mla':
@@ -129,6 +139,7 @@ class Charts:
         #return jsonpickle.encode(data)
       else:
         pass
-    #except:
-      #raise web.internalerror()
+    except:
+      raise web.seeother('/errors')
+
 
