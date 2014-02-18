@@ -96,7 +96,7 @@ def getInfraText(data,lang):
       neighbours = data["neighbours_dise"][data["neighbours_dise"].keys()[0]].keys()
       if neighbours:
         neighbours.remove(data['const_name'])
-        neighbours_txt_str = '<br/>' + data['const_name'] + ' ' + transDict['19'] + ', '.join(neighbours) + '. ' + transDict['20']
+        neighbours_txt_str = '<br/>' + str(data['const_name']) + ' ' + transDict['19'] + ', '.join([str(x) for x in neighbours]) + '. ' + transDict['20']
     data['neighbours_txt'] = neighbours_txt_str 
     return data
 

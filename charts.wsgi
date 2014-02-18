@@ -140,6 +140,7 @@ class Charts:
       else:
         pass
     except:
+      traceback.print_exc(file=sys.stderr)
       raise web.seeother('/errors')
 
 
