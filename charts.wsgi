@@ -42,7 +42,11 @@ urls = (
      '/charts/(.*)/(.*)/(.*)/(.*)','Charts',
 )
 
+import newrelic.agent
+newrelic.agent.initialize(abspath + '/config/newrelic.ini')
+
 application = web.application(urls,globals()).wsgifunc()
+application = newrelic.agent.WSGIApplicationWrapper(application)
 
 def treemenu():
   data = {}
