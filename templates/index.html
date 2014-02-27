@@ -2,19 +2,81 @@ $def with (data)
 <html>
   <head>
   <title>KLP Reports</title>
-  <script type="text/javascript" src="js/simpletreemenu.js"></script>
-  <script type="text/javascript" src="js/links.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/simpletree.css" />
-  <link rel="stylesheet" type="text/css" href="css/grid.css" />
-  <link rel="stylesheet" type="text/css" href="css/link_style.css" />
+  <link rel="icon" href="/images/favicon.ico"/>
+  <script type="text/javascript" src="/js/simpletreemenu.js"></script>
+  <script type="text/javascript" src="/js/links.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/simpletree.css" />
+  <link rel="stylesheet" type="text/css" href="/css/grid.css" />
+  <link rel="stylesheet" type="text/css" href="/css/link_style.css" />
+  
+  <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+  <script type="text/javascript" src="/js/libs.combined.js"></script>
+  <script type="text/javascript" src="/js/lib/iCheck/jquery.icheck.min.js"></script>
+  <script type="text/javascript" src="/js/main.js"></script>
+  <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+  <link type="text/css" rel="stylesheet" href="/js/lib/iCheck/skins/minimal/minimal.css"/>
+    
   </head>
-  <body>
+  <body onLoad="showErrorsIfAny($data);">
+  
+  <header class="main-header">
+    <div class="header-content">
+      <a href="/" class="header_mobile_logo"></a>
+      <a class="mobile_icon" onclick="toggle_mobile_nav();"></a>
+      <nav class="top-nav" role="navigation">
+        <ul id="navigation">
+          <li class="home">
+            <a href="http://www.klp.org.in" title=""><h1>Karnataka Learning Partnership</h1></a>
+          </li>
+          <li class="school_map">
+            <a href="http://www.klp.org.in/map" title="">School Map</a>
+          </li>
+          <li class="programmes">
+            <a href="http://www.klp.org.in/text/reading" title="">Programmes</a>
+            <ul>
+              <li><a href="http://www.klp.org.in/text/reading" title=""><span></span>Reading</a></li>
+              <li><a href="http://www.klp.org.in/text/maths" title=""><span></span>Math</a></li>
+              <li><a href="http://www.klp.org.in/text/library" title=""><span></span>Library</a></li>
+              <li><a href="/text/preschool" title=""><span></span>Pre-School</a></li>
+            </ul>
+          </li>
+          <li class="volunteer"><a href="http://www.klp.org.in/text/volunteer" title="">Volunteer</a></li>
+          <li class="database">
+            <a href="http://www.klp.org.in/listFiles/2" title="">Data</a>
+            <ul>
+              <li><a href="http://status.klp.org.in" target="_blank" title=""><span></span>Status</a></li>
+              <li><a href="http://www.klp.org.in/listFiles/2" target="_blank" title=""><span></span>Raw Data</a></li>
+              <li><a href="http://github.com/klpdotorg" target="_blank" title=""><span></span>Code</a></li>
+            </ul>
+          </li>
+          <li class="reports">
+            <a href="http://www.klp.org.in/text/reports" title="">Reports</a>
+            <ul>
+              <li><a href="/" target="_blank" title=""><span></span>KLP Reports</a></li>
+              <li><a href="http://sslc.klp.org.in" target="_blank" title=""><span></span>SSLC</a></li>
+              <li><a href="http://www.klp.org.in/text/reports" title=""><span></span>Other Reports</a></li>
+            </ul>
+          </li>
+          <li class="about">
+            <a href="http://www.klp.org.in/text/aboutus" title="">About</a>
+            <ul>
+              <li><a href="http://www.klp.org.in/text/aboutus" title=""><span></span>About</a></li>
+              <li><a href="http://www.klp.org.in/text/partners" title=""><span></span>Partners</a></li>
+              <li><a href="http://www.klp.org.in/text/disclaimer" title=""><span></span>Disclaimer</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <div class="clr"></div>
+    </div>
+  </header>
+
 <div class="container container_12">
+  
 <!--======================-->
     <div class="clearheader">&nbsp;</div>
-  <div class="grid_12"><h1>KLP Reports </h1></div>
-  <div class="clearbreak">&nbsp;</div>
-  <hr></hr>
+  <div class="grid_12">
+  <h1 class="bordered red">KLP Reports</h1>
     <div class="grid_4">
   <ul rel="open" id="treemenu2" class="treeview">
   <li>Electoral Boundaries
@@ -129,7 +191,9 @@ $def with (data)
 </ul>
     </div>
  <div class="grid_8">
-  <div id="content_pane">
+  <div id="content_pane"></div>
+  <div id="error_pane" style="visibility:hidden"></div>
+  
 </div>
 </div> <!--closing container -->
   </body>
