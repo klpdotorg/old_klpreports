@@ -22,10 +22,10 @@ function roundNumber(rnum, rlength) { // Arguments: number to round, number of d
       
 function initialise(data)
 {
-
   info = data;
-  translations = info['transdict']
-  now = new Date()
+  consttype=info["const_type"];
+  translations = info['transdict'];
+  now = new Date();
   document.getElementById("reportdate").innerHTML = now.toDateString();
   document.getElementById("rephead").innerHTML = "<img src=\'/images/KLP_logo2.png\' width='130px' vertical-align='top' border=0 />" + '<br/>' + translations['H56'];
 //  document.getElementById("rephead").innerHTML =  translations['H56'];
@@ -37,10 +37,20 @@ function initialise(data)
 
   document.getElementById("constname").innerHTML = translations[info["const_type"]] + " <img src=\'/images/arrow.gif\' width='8px' vertical-align='center' border='0'/>" + "<br/><h1>"  
                                                  + info['const_name'] + "</h1>";
-  document.getElementById("constinfo").innerHTML =  "<dl class='header-def'><dt>" + translations['H8'] + "</dt><dd>" + info["const_code"] + "</dd>"
-                                                + "<dt>" + translations['H9'] + "</dt><dd>" + info["const_rep"] + "</dd>"
-                                                + "<dt>" + translations['H10'] + "</dt><dd>" + info["const_party"] + "</dd>" 
-                                                + "</dl>";
+  constinfo =  "<dl class='header-def'><dt>";
+  if(consttype=='MP Constituency' || consttype=='MLA Constituency' || consttype=='Ward'){
+    constinfo = constinfo + "<dt>" + translations['H8'] + "</dt><dd>" + info["const_code"] + "</dd>"
+						 + "<dt>" + translations['H9'] + "</dt><dd>" + info["const_rep"] + "</dd>"
+                                                + "<dt>" + translations['H10'] + "</dt><dd>" + info["const_party"] + "</dd>"; 
+  }
+  else if(consttype=='BLOCK' || consttype=='PROJECT'){
+    constinfo =constinfo  + "<dt>" + translations["DISTRICT"] + "</dt><dd>" + info["const_dist"] + "</dd>";
+  }
+  else if(consttype=='CLUSTER' || consttype=='CIRCLE'){
+    constinfo = constinfo + "<dt>" + translations["DISTRICT"] + "</dt><dd>" + info["const_dist"] + "</dd>"
+                                                + "<dt>" + translations["BLOCK"]+"/"+translations["PROJECT"] + "</dt><dd>" + info["const_blck"] + "</dd>";
+  }
+  document.getElementById("constinfo").innerHTML = constinfo + "</dl>";;
   document.getElementById("hiddenip").innerHTML = '<input type="hidden" name="const_type" value="'+ info["constype"] + '" />' +
           '<input type="hidden" name="const_id" value="'+ info["const_id"] + '" />' +
           '<input type="hidden" name="forreport" value="'+ info["forreport"] + '" />' +

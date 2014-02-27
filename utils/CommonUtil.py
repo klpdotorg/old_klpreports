@@ -23,17 +23,34 @@ class CommonUtil:
       #  constype_str = "mla"
       #elif constype == 3:
       #  constype_str = "corporator"
-      result = cursor.query(db.Queries.getDictionary(constype)[constype_str + '_const_details'],{'s':constid})
-      for row in result:
-        data['const_name'] = row.const_ward_name.strip() if row.const_ward_name != None else ''
-        data['const_type'] = row.const_ward_type.strip() if row.const_ward_type != None else ''
-        data['const_code'] = row.elec_comm_code if row.elec_comm_code != None else ''
-        data['const_rep'] = row.current_elected_rep.strip() if row.current_elected_rep != None else ''
-        data['const_party'] = row.current_elected_party.strip() if row.current_elected_party != None else ''
-        if row.neighbours != None:
-          neighbours = row.neighbours.strip().split('|')
-          neighbours.append(row.elec_comm_code)
-      return [data,neighbours,constype_str]
+      if constype_str!='boundary':
+          result = cursor.query(db.Queries.getDictionary(constype)[constype_str + '_const_details'],{'s':constid})
+          for row in result:
+            data['const_name'] = row.const_ward_name.strip() if row.const_ward_name != None else ''
+            data['const_type'] = row.const_ward_type.strip() if row.const_ward_type != None else ''
+            data['const_code'] = row.elec_comm_code if row.elec_comm_code != None else ''
+            data['const_rep'] = row.current_elected_rep.strip() if row.current_elected_rep != None else ''
+            data['const_party'] = row.current_elected_party.strip() if row.current_elected_party != None else ''
+            if row.neighbours != None:
+              neighbours = row.neighbours.strip().split('|')
+              neighbours.append(row.elec_comm_code)
+          return [data,neighbours,constype_str]
+      else:
+          result = cursor.query(db.Queries.getDictionary(constype)[constype_str + '_const_details'],{'s':constid})
+          detail={}
+          for row in result:
+            detail[row.dist_id]=[row.district,'District']
+            detail[row.blck_id]=[row.block,'Block','Project']
+            detail[row.clst_id]=[row.clust,'Cluster','Circle']
+            data['const_name'] = detail[int(constid[0])][0].upper()
+            data['const_type'] = detail[int(constid[0])][row.type].upper()
+            data['const_code'] = constid
+            data['const_dist'] = row.district.title()
+            data['const_blck'] = row.block.title()
+            #if row.neighbours != None:
+            #  neighbours = row.neighbours.strip().split('|')
+            #  neighbours.append(row.elec_comm_code)
+          return [data,neighbours,constype_str]
     except:
       print "Unexpected error:", sys.exc_info()
       traceback.print_exc(file=sys.stdout)
@@ -47,6 +64,8 @@ class CommonUtil:
         constype = "mla"
       elif cons_type == 3:
         constype = "corporator"
+      elif cons_type == 4:
+        constype = "boundary"
       data = {}
       tabledata = {}
       for querykey in qkeys:

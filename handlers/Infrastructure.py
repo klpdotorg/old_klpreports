@@ -28,6 +28,9 @@ class Infrastructure:
     elif cons_type == 3:
       data["const_type"]='Corporator'
       constype = "corporator"
+    elif cons_type == 4:
+      data["const_type"]='Boundary'
+      constype = "boundary"
     data["const_name"]=str(constid[0])
 
     data.update(self.constituencyData(constype,constid))
@@ -109,21 +112,20 @@ class Infrastructure:
     data = {}
     constype_str = constype
     try:
-      querykey = 'neighbours_df_count'
-      result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':tuple(neighbours)})
-      dise_count = {} 
-      for row in result:
-        dise_count[row.const_ward_name] = int(row.count)
-      data[querykey] = dise_count
-
-      querykey = 'neighbours_ai_count'
-      result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':tuple(neighbours)})
-      infra_count = {} 
-      for row in result:
-        infra_count[row.const_ward_name] = int(row.count)
-      data[querykey] = infra_count
-
       if len(neighbours) > 0:
+        querykey = 'neighbours_df_count'
+        result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':tuple(neighbours)})
+        dise_count = {} 
+        for row in result:
+          dise_count[row.const_ward_name] = int(row.count)
+        data[querykey] = dise_count
+
+        querykey = 'neighbours_ai_count'
+        result = cursor.query(db.Queries.getDictionary(constype)[constype + '_' + querykey],{'s':tuple(neighbours)})
+        infra_count = {} 
+        for row in result:
+          infra_count[row.const_ward_name] = int(row.count)
+        data[querykey] = infra_count
         crit='neighbours_'
         query_keys = ['dise','anginfra']
         for key in query_keys:

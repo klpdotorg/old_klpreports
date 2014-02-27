@@ -25,6 +25,9 @@ class Demographics:
     elif cons_type == 3:
       data["const_type"]='Corporator'
       constype = "corporator"
+    elif cons_type == 4:
+      data["const_type"]='Boundary'
+      constype = "boundary"
     data["const_name"]=str(constid[0])
 
     queries = ['gend_sch','gend_presch']

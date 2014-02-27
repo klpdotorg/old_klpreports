@@ -50,12 +50,12 @@ class Index:
     data.update({"mp":links.getMPreports()})
     data.update({"mla":links.getMLAreports()})
     data.update({"corporator":links.getWardreports()})
-    #data.update(links.getSchDistreports())
+    data.update({"schl_dist":links.getSchDistreports()})
     data.update({"block":links.getBlkreports()})
     data.update({"cluster":links.getClusreports()})
-    #data.update(links.getPreDistreports())
-    #data.update(links.getProjreports())
-    #data.update(links.getCircreports())'''
+    data.update({"pre_dist":links.getPreDistreports()})
+    data.update({"project":links.getProjreports()})
+    data.update({"circle":links.getCircreports()})
     return render.index(simplejson.dumps(data,sort_keys=True))
 
 class Charts:
@@ -69,10 +69,10 @@ class Charts:
         constype = 2
       elif searchby.lower() == 'corporator':
         constype = 3
-      elif searchby.lower() == 'cluster':
+      elif searchby.lower() == 'boundary':
         constype = 4
-      elif searchby.lower() == 'block':
-        constype = 5
+      #elif searchby.lower() == 'block':
+      #  constype = 5
       lang = 2
       if rep_lang.lower()=='kannada':
         lang = 1
