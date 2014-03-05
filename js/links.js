@@ -13,7 +13,7 @@ function displayPane(dat,cons,typ)
   content_str = disclaimer_str + heading_str + '<div class="div-table">';
   for (key in the_list)
   { 
-    if((typ!='infrastructure' && typ!='finance') && the_list[key][1]==2)
+    if((typ!='infrastructure' && typ!='finance') && the_list[key][1]==2 && cons!='boundary')
         continue;
     content_str = content_str +  '<div class="div-table-row">';
     content_str = content_str +  '<div class="div-table-col">' + key + '</div>';

@@ -29,6 +29,7 @@ function initialise(data)
 {
 
 info = data;
+consttype=info["const_type"];
 translations = info['transdict'];
 now = new Date()
 document.getElementById("reportdate").innerHTML = now.toDateString();
@@ -39,7 +40,29 @@ document.getElementById("schoolhead").innerHTML = translations['H79'];
 //document.getElementById("notehead").innerHTML = translations['H81'];
 document.getElementById("neighhead").innerHTML = translations['H40'];
 
-document.getElementById("constname").innerHTML = translations[info["const_type"]] + " <img src=\'/images/arrow.gif\' width='8px' vertical-align='center' border='0'/>" + "<br/><h1>"  
+ document.getElementById("constname").innerHTML = translations[info["const_type"]] + " <img src=\'/images/arrow.gif\' width='8px' vertical-align='center' border='0'/>" + "<br/><h1>"
+                                                 + info['const_name'] + "</h1>";
+  constinfo =  "<dl class='header-def'><dt>";
+  if(consttype=='MP Constituency' || consttype=='MLA Constituency' || consttype=='Ward'){
+    constinfo = constinfo + "<dt>" + translations['H8'] + "</dt><dd>" + info["const_code"] + "</dd>"
+                                                 + "<dt>" + translations['H9'] + "</dt><dd>" + info["const_rep"] + "</dd>"
+                                                + "<dt>" + translations['H10'] + "</dt><dd>" + info["const_party"] + "</dd>";
+  }
+  else if(consttype=='BLOCK' || consttype=='PROJECT'){
+    constinfo =constinfo  + "<dt>" + translations["DISTRICT"] + "</dt><dd>" + info["const_dist"] + "</dd>";
+  }
+  else if(consttype=='CLUSTER' || consttype=='CIRCLE'){
+    constinfo = constinfo + "<dt>" + translations["DISTRICT"] + "</dt><dd>" + info["const_dist"] + "</dd>"
+                                                + "<dt>" + translations["BLOCK"]+"/"+translations["PROJECT"] + "</dt><dd>" + info["const_blck"] + "</dd>";
+  }
+  document.getElementById("constinfo").innerHTML = constinfo + "</dl>";;
+  document.getElementById("hiddenip").innerHTML = '<input type="hidden" name="const_type" value="'+ info["constype"] + '" />' +
+          '<input type="hidden" name="const_id" value="'+ info["const_id"] + '" />' +
+          '<input type="hidden" name="forreport" value="'+ info["forreport"] + '" />' +
+          '<input type="hidden" name="rep_lang" value="'+ info["rep_lang"] + '" />' ;
+
+
+/*document.getElementById("constname").innerHTML = translations[info["const_type"]] + " <img src=\'/images/arrow.gif\' width='8px' vertical-align='center' border='0'/>" + "<br/><h1>"  
                                                + info['const_name'] + "</h1>";
 document.getElementById("constinfo").innerHTML =  "<dl class='header-def'><dt>" + translations['H8'] + "</dt><dd>" + info["const_code"] + "</dd>"
                                               + "<dt>" + translations['H9'] + "</dt><dd>" + info["const_rep"] + "</dd>"
@@ -48,11 +71,17 @@ document.getElementById("constinfo").innerHTML =  "<dl class='header-def'><dt>" 
 document.getElementById("hiddenip").innerHTML = '<input type="hidden" name="const_type" value="'+ info["constype"] + '" />' +
         '<input type="hidden" name="const_id" value="'+ info["const_id"] + '" />' +
         '<input type="hidden" name="forreport" value="'+ info["forreport"] + '" />' +
-        '<input type="hidden" name="rep_lang" value="'+ info["rep_lang"] + '" />' ;
-document.getElementById('instcounts').innerHTML = '<dl class=\'header-def\'><dt style="font-size:9pt">' + translations['H11'] + '</dt><dd>' + info["inst_counts"]["abs_schcount"] + '<dt style="font-size:9pt">' + translations['H12'] + '</dt><dd>' + info["inst_counts"]["abs_preschcount"] +'</dd></dl>';
+        '<input type="hidden" name="rep_lang" value="'+ info["rep_lang"] + '" />' ;*/
+//document.getElementById('instcounts').innerHTML = '<dl class=\'header-def\'><dt style="font-size:9pt">' + translations['H11'] + '</dt><dd>' + info["inst_counts"]["abs_schcount"] + '<dt style="font-size:9pt">' + translations['H12'] + '</dt><dd>' + info["inst_counts"]["abs_preschcount"] +'</dd></dl>';
+
+var show_counts = '<dl class="header-def">';
 
 if(parseInt(info["inst_counts"]["abs_schcount"]) != 0){
+   show_counts = show_counts + '<dt style="font-size:9pt">' + translations['H11'] + '</dt><dd>' + info["inst_counts"]["abs_schcount"] + '</dd>'
+}
 
+if(parseInt(info["inst_counts"]["abs_schcount"]) != 0){
+//  show_counts = show_counts + '<dt style="font-size:9pt">' + translations['H12'] + '</dt><dd>' + info["inst_counts"]["abs_preschcount"] +'</dd>';
   ang_infra_table();
   dise_facility_table();
   //lib_status_chart();
@@ -70,7 +99,10 @@ if(parseInt(info["inst_counts"]["abs_schcount"]) != 0){
   document.getElementById('neighbours_txt').innerHTML = (info['neighbours_txt'] == 'undefined') ? translations['H60'] : info['neighbours_txt'];
   document.getElementById('conclusion_txt').innerHTML = (info['conclusion_txt'] == 'undefined') ? translations['H60'] : info['conclusion_txt'];
 }
+document.getElementById('instcounts').innerHTML = show_counts + '</dl>';
+
 }
+
 
 function neighbours_anginfra() {
    // Create our data table.

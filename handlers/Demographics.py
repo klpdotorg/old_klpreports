@@ -104,6 +104,7 @@ class Demographics:
     data = {}
     util = CommonUtil()
     ret_data = util.constituencyData(constype,constid)
+    print ret_data
     data.update(ret_data[0])
     neighbors = self.neighboursData(ret_data[1],ret_data[2])
     if neighbors:

@@ -35,8 +35,10 @@ def getDemographicsText(data,lang):
       lang_txt_str = lang_txt_str.rstrip(', ') + transDict['23'] + '.'
       trans_list = []
       for i in data['mt_sch_ord_lst']:
+        print i
         trans_list.append(transDict[i.upper()])
       lang_txt_str = lang_txt_str + transDict['15'] + ', '.join(trans_list) + transDict['16']
+      print lang_txt_str
       data['lang_txt'] = lang_txt_str
 
       presch_txt_str = presch_txt_str + data["inst_counts"]["schcount"] + ' ' + transDict['3'] + str(data['gend_sch_tb']['Boy']) + transDict['4'] + str(data['gend_sch_tb']['Girl']) + transDict['5']

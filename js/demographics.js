@@ -55,9 +55,11 @@ function initialise(data)
           '<input type="hidden" name="const_id" value="'+ info["const_id"] + '" />' +
           '<input type="hidden" name="forreport" value="'+ info["forreport"] + '" />' +
           '<input type="hidden" name="rep_lang" value="'+ info["rep_lang"] + '" />' ;
-  document.getElementById('instcounts').innerHTML = '<dl class=\'header-def\'><dt>' + translations['H11'] + '</dt><dd>' + info["inst_counts"]["schcount"] + '</dd>'
-                                                  + '<dt>' + translations['H12'] + '</dt><dd>' + info["inst_counts"]["preschcount"] + '</dd></dl>';
+
+//document.getElementById('instcounts').innerHTML='<dl class=\'header-def\'><dt>' + translations['H11'] + '</dt><dd>' + info["inst_counts"]["schcount"] + '</dd>' + '<dt>' + translations['H12'] + '</dt><dd>' + info["inst_counts"]["preschcount"] + '</dd></dl>';
+  var show_counts = '<dl class="header-def">';
   if(parseInt(info["inst_counts"]["schcount"]) != 0){
+    show_counts=show_counts+'<dt>' + translations['H11'] + '</dt><dd>' + info["inst_counts"]["schcount"] + '</dd>';
     gend_sch_Chart();
     mt_sch_Chart();
     moi_sch_Chart();
@@ -65,10 +67,13 @@ function initialise(data)
     enrol_sch_Chart();
   }
   if(parseInt(info["inst_counts"]["preschcount"]) != 0){
+    show_counts=show_counts+ '<dt>' + translations['H12'] + '</dt><dd>' + info["inst_counts"]["preschcount"] + '</dd>';
     mt_presch_Chart();
     gend_presch_Chart();
     enrol_presch_Chart();
   }
+document.getElementById('instcounts').innerHTML=show_counts+'</dl>';
+//alert(show_counts);
   if(info["neighbours_sch_hasdata"] != 0) {
     neighbours_sch_Chart();
     //neighbours_sch_table();

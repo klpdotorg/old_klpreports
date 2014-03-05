@@ -39,7 +39,7 @@ class CommonUtil:
           result = cursor.query(db.Queries.getDictionary(constype)[constype_str + '_const_details'],{'s':constid})
           detail={}
           for row in result:
-            detail[row.dist_id]=[row.district,'District']
+            detail[row.dist_id]=[row.district,'District','District']
             detail[row.blck_id]=[row.block,'Block','Project']
             detail[row.clst_id]=[row.clust,'Cluster','Circle']
             data['const_name'] = detail[int(constid[0])][0].upper()
@@ -50,6 +50,7 @@ class CommonUtil:
             #if row.neighbours != None:
             #  neighbours = row.neighbours.strip().split('|')
             #  neighbours.append(row.elec_comm_code)
+            print neighbours
           return [data,neighbours,constype_str]
     except:
       print "Unexpected error:", sys.exc_info()
