@@ -1,0 +1,23 @@
+geography_columns
+geometry_columns
+raster_columns
+raster_overviews
+spatial_ref_sys
+tb_electedrep_master
+tb_school_electedrep
+tb_school_stu_counts
+	vw_ai_questions not used
+vw_ang_infra_agg
+vw_angpre_2011_agg
+vw_dise_facility_agg
+vw_dise_info
+	vw_electoral_coord not used
+vw_lib_lang_agg
+vw_lib_level_agg
+vw_libinfra
+vw_mdm_agg
+vw_paisa_data
+	vw_reading_2006_agg not used
+	vw_reading_2006_agg_cohorts not used
+vw_reading_2011_agg
+vw_school_dise
